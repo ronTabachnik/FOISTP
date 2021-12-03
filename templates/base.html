@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="{% static 'css/mobile.css' %}" />
   <title>
     {% block title %}
-      Twitter
+      Shoe store
     {% endblock title %}
   </title>
 </head>
@@ -23,11 +23,13 @@
       {% include "navbar.html" %}
     </div>
   </header>
+  <hr/>
   <main id="main">
     {% block content %}
-      
+    
     {% endblock content %}
   </main>
+  <hr/>
   <footer id="footer">
     {% include "footer.html" %}
   </footer>
