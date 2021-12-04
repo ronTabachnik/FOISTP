@@ -25,6 +25,10 @@ class RegisteredCustomer(models.Model):
         return self.user
 
 
+class Administrator(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+
 class Customer(models.Model):
     name = models.CharField(max_length=200, blank=False, null=True)
     surname = models.CharField(max_length=200, blank=False, null=True)
