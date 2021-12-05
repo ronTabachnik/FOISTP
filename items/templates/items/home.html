@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Home | Our Site
+{% endblock title %}
+{% block content %}
+  <section class="container">
+    <div class="container sort-panel">
+      <div class="search-field">
+        <i class="fas fa-search d-inline"></i>
+        <input class="text-input d-inline" type="text" id="search" placeholder="Search">
+      </div>
+      <div class="sort-combo">
+        <label for="price-select">Sort by: </label>
+        <select name="price-select" id="price-select">
+          <option value="newest">Newest Arrivals</option>
+          <option value="price-high-to-low">Price: High to Low</option>
+          <option value="price-low-to-high">Price: Low to High</option>
+        </select>
+      </div>
+    </div>
+  </section>
+  <section class="container" id="catalog-content">
+    <aside class="catalog">
+      <div class="title">
+        <i class="fas fa-book-open"></i>
+        <span>Category</span>
+      </div>
+      <ul>
+        <li><a href="#">Boots</a></li>
+        <li><a href="#">Sneakers</a></li>
+        <li><a href="#">Boat Shoes</a></li>
+      </ul>
+    </aside>
+    <div class="products">
+      <ul class="products-list">
+        <li class="products-list-item">
+          <div class="item">
+            <a href="items/item">
+              <img class="item-image" src="{% static 'images/shoes.jpg' %}" alt="shoes">
+              <div class="item-description">
+                <span class="title">A very long title but who cares?</span>
+                <span class="price">$50</span>
+              </div>
+            </a>
+          </div>
+        </li>
+        <li class="products-list-item">
+          <div class="item">
+            <a href="items/item">
+              <img class="item-image" src="{% static 'images/shoes.jpg' %}" alt="shoes">
+              <div class="item-description">
+                <span class="title">LATINDAY</span>
+                <span class="price">$50</span>
+              </div>
+            </a>
+          </div>
+        </li>
+        <li class="products-list-item">
+          <div class="item">
+            <a href="items/item">
+              <img class="item-image" src="{% static 'images/shoes.jpg' %}" alt="shoes">
+              <div class="item-description">
+                <span class="title">A very long title but who cares?</span>
+                <span class="price">$50</span>
+              </div>
+            </a>
+          </div>
+        </li>
+        <li class="products-list-item">
+          <div class="item">
+            <a href="items/item">
+              <img class="item-image" src="{% static 'images/shoes.jpg' %}" alt="shoes">
+              <div class="item-description">
+                <span class="title">A very long title but who cares?</span>
+                <span class="price">$50</span>
+              </div>
+            </a>
+          </div>
+        </li>
+        <li class="products-list-item">
+          <div class="item">
+            <a href="items/item">
+              <img class="item-image" src="{% static 'images/shoes.jpg' %}" alt="shoes">
+              <div class="item-description">
+                <span class="title">A very long title but who cares?</span>
+                <span class="price">$50</span>
+              </div>
+            </a>
+          </div>
+        </li>
+        <li class="products-list-item">
+          <div class="item">
+            <a href="items/item">
+              <img class="item-image" src="{% static 'images/shoes.jpg' %}" alt="shoes">
+              <div class="item-description">
+                <span class="title">A very long title but who cares?</span>
+                <span class="price">$50</span>
+              </div>
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+{% endblock content %}

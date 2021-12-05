@@ -1,10 +1,30 @@
 {% load static %}
 <nav id="navbar">
-  <ul>
-    <li><a href="{% url 'home' %}"><div class="block">Home</div></a></li>
-    <li><a href="{% url 'home' %}"><div class="block">Home</div></a></li>
-    <li><a href="{% url 'home' %}"><div class="block">Home</div></a></li>
-    <li><a href="{% url 'home' %}"><div class="block">Home</div></a></li>
-    <li><a href="{% url 'home' %}"><div class="block">Home</div></a></li>
+  <a href="{% url 'home' %}" id="nav-logo"><i class="fas fa-store nav-logo"></i></a>
+  <ul id="nav-menu">
+    <li>
+      <a href="{% url 'home' %}">Catalog</a>
+    </li>
+    <li>
+      <a href="{% url 'home' %}">Cart page</a>
+    </li>
+    <li>
+      <a href="{% url 'home' %}">Something there</a>
+    </li>
+    <li>
+      <a href="{% url 'home' %}"><div class="block">Home</div></a>
+    </li>
+    <li>
+      <a href="{% url 'home' %}">My profile</a>
+    </li>
+    <li>
+      <a href="{% url 'login' %}">Login</a>
+    </li>
+    <li>
+      <a href="{% url 'register' %}">Register</a>
+    </li>
   </ul>
+  <div id="nav-toggle">
+    <i class="fas fa-bars"></i>
+  </div>
 </nav>
