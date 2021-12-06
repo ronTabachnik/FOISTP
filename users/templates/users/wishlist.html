@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Wishlist | Shoe store
+{% endblock title %}
+{% block content %}
+  <h1>Wishlist</h1>
+  <ul>
+    {% for wl_item in wishlist %}
+      <li>{{wl_item.title}}</li>
+    {% endfor %}
+  </ul>
+{% endblock content %}
