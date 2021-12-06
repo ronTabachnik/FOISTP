@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 import uuid
 from countries.models import Country
 from items.models import Item
+from orders.models import Order
 
 
 # ! Customer address should have many to one relation with customer
@@ -21,7 +22,9 @@ class RegisteredCustomer(models.Model):
         User, on_delete=models.CASCADE, related_name='registered_customer')
     avatar = models.ImageField(
         upload_to=get_customer_avatar_path, default='images/default.jpg')
-    wishlist = models.ManyToManyField(Item, blank=True)
+    wishlist = models.ManyToManyField(
+        Item, blank=True, related_name='wishlist')
+    cart = models.ManyToManyField(Item, blank=True, related_name='cart')
     ban_status = models.BooleanField(default=False)
 
     def __str__(self):
@@ -36,6 +39,7 @@ class Customer(models.Model):
     name = models.CharField(max_length=200, blank=False, null=True)
     surname = models.CharField(max_length=200, blank=False, null=True)
     contact_phone = models.CharField(max_length=15, blank=True, null=True)
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
 
