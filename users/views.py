@@ -1,17 +1,11 @@
-from django.contrib.auth.models import User
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 
 
-def home(request):
+def login(request):
     context = {}
-    return render(request, 'users/home.html', context=context)
+    return render(request, 'users/login.html', context=context)
 
 
-def wishlist(request):
-    if not request.user.is_authenticated and request.user.registeredCustomer:
-        return redirect('home')
-    user = User.objects.get(username=request.user)
-    registered_customer = user.registered_customer
-    wishlist = registered_customer.wishlist.all()
-    context = {'wishlist': wishlist}
-    return render(request, 'users/wishlist.html', context=context)
+def register(request):
+    context = {}
+    return render(request, 'users/register.html', context=context)
