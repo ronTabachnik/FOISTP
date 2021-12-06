@@ -14,6 +14,11 @@ def home(request):
     return render(request, 'items/home.html', context=context)
 
 
-def item_detail(request, item):
+def item_detail(request, item_id):
     context = {}
+    try:
+        item = Item.objects.get(pk=item_id)
+        context['item'] = item
+    except Item.DoesNotExist:
+        context['error_message'] = 'Failed to fetch an item.'
     return render(request, 'items/item.html', context=context)
