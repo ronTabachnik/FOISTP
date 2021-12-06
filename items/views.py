@@ -11,7 +11,7 @@ def home(request):
     context = {
         'items': items
     }
-    return render(request, 'items/home.html', context=context)
+    return render(request, 'items/home.html', context)
 
 
 def item_detail(request, item_id):
@@ -21,4 +21,4 @@ def item_detail(request, item_id):
         context['item'] = item
     except Item.DoesNotExist:
         context['error_message'] = 'Failed to fetch an item.'
-    return render(request, 'items/item.html', context=context)
+    return render(request, 'items/item.html', context)
