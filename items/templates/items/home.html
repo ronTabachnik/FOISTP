@@ -32,75 +32,25 @@
         <li><a href="#">Boat Shoes</a></li>
       </ul>
     </aside>
-    <div class="products">
-      <ul class="products-list">
-        <li class="products-list-item">
-          <div class="item">
-            <a href="items/item">
-              <img class="item-image" src="{% static 'images/shoes.jpg' %}" alt="shoes">
-              <div class="item-description">
-                <span class="title">A very long title but who cares?</span>
-                <span class="price">$50</span>
-              </div>
-            </a>
-          </div>
-        </li>
-        <li class="products-list-item">
-          <div class="item">
-            <a href="items/item">
-              <img class="item-image" src="{% static 'images/shoes.jpg' %}" alt="shoes">
-              <div class="item-description">
-                <span class="title">LATINDAY</span>
-                <span class="price">$50</span>
-              </div>
-            </a>
-          </div>
-        </li>
-        <li class="products-list-item">
-          <div class="item">
-            <a href="items/item">
-              <img class="item-image" src="{% static 'images/shoes.jpg' %}" alt="shoes">
-              <div class="item-description">
-                <span class="title">A very long title but who cares?</span>
-                <span class="price">$50</span>
-              </div>
-            </a>
-          </div>
-        </li>
-        <li class="products-list-item">
-          <div class="item">
-            <a href="items/item">
-              <img class="item-image" src="{% static 'images/shoes.jpg' %}" alt="shoes">
-              <div class="item-description">
-                <span class="title">A very long title but who cares?</span>
-                <span class="price">$50</span>
-              </div>
-            </a>
-          </div>
-        </li>
-        <li class="products-list-item">
-          <div class="item">
-            <a href="items/item">
-              <img class="item-image" src="{% static 'images/shoes.jpg' %}" alt="shoes">
-              <div class="item-description">
-                <span class="title">A very long title but who cares?</span>
-                <span class="price">$50</span>
-              </div>
-            </a>
-          </div>
-        </li>
-        <li class="products-list-item">
-          <div class="item">
-            <a href="items/item">
-              <img class="item-image" src="{% static 'images/shoes.jpg' %}" alt="shoes">
-              <div class="item-description">
-                <span class="title">A very long title but who cares?</span>
-                <span class="price">$50</span>
-              </div>
-            </a>
-          </div>
-        </li>
-      </ul>
+    <div class="items">
+      {% if items %}
+        <ul class="items-list">
+        {% for item in items %}
+          <li class="items-list-item">
+            <div class="item">
+              <a href="items/item">
+                <img class="item-image" src="{{ item.picture.url }}" alt="shoes">
+                <div class="item-description">
+                  <span class="title">{{ item.title }}</span>
+                  <span class="rating">Rating: {{ item.rating }}</span>
+                  <span class="price">${{ item.price }}</span>
+                </div>
+              </a>
+            </div>
+          </li>
+        {% endfor %}
+        </ul>
+      {% endif %}
     </div>
   </section>
 {% endblock content %}

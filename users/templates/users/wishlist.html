@@ -5,9 +5,11 @@
 {% endblock title %}
 {% block content %}
   <h1>Wishlist</h1>
-  <ul>
-    {% for wl_item in wishlist %}
-      <li>{{wl_item.title}}</li>
-    {% endfor %}
-  </ul>
+  {% if wishlist %}
+    <ul>
+      {% for wl_item in wishlist %}
+        <li>{{wl_item.title}}</li>
+      {% endfor %}
+    </ul> 
+  {% endif %}
 {% endblock content %}
