@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid
 from countries.models import Country
+from items.models import Item
 
 
 # ! Customer address should have many to one relation with customer
@@ -16,13 +17,15 @@ def get_business_avatar_path(instance, filename):
 
 
 class RegisteredCustomer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='registered_customer')
     avatar = models.ImageField(
         upload_to=get_customer_avatar_path, default='images/default.jpg')
+    wishlist = models.ManyToManyField(Item, blank=True)
     ban_status = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user
+        return str(self.user)
 
 
 class Administrator(models.Model):
