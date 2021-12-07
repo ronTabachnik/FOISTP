@@ -4,12 +4,51 @@
   Wishlist | Shoe store
 {% endblock title %}
 {% block content %}
-  <h1>Wishlist</h1>
-  {% if wishlist %}
-    <ul>
-      {% for wl_item in wishlist %}
-        <li>{{wl_item.title}}</li>
-      {% endfor %}
-    </ul> 
-  {% endif %}
+  <section class="container">
+    <h1 class="section-title">Wishlist</h1>
+  </section>
+  <section class="container">
+    {% if wishlist %}
+    <div class="items">
+      <ul class="items-list">
+        {% for wl_item in wishlist %}
+        <li class="items-list-item">
+          <div class="item">
+            <button class="item-remove-btn">X</button>
+            <a href="{% url 'item' %}">
+              <img class="item-image" src="{{ wl_item.picture.url }}" alt="shoes">
+              <div class="item-description">
+                <span class="title">{{ wl_item.title }}</span>
+                <span class="rating">Rating: {{ wl_item.rating }}</span>
+                <span class="price">${{ wl_item.price }}</span>
+              </div>
+            </a>
+          </div>
+        </li>
+        {% endfor %}
+      </ul> 
+    </div>
+    {% endif %}
+  </section>
 {% endblock content %}
+
+{% comment %} <div class="items">
+  {% if items %}
+    <ul class="items-list">
+    {% for item in items %}
+      <li class="items-list-item">
+        <div class="item">
+          <a href="items/item">
+            <img class="item-image" src="{{ item.picture.url }}" alt="shoes">
+            <div class="item-description">
+              <span class="title">{{ item.title }}</span>
+              <span class="rating">Rating: {{ item.rating }}</span>
+              <span class="price">${{ item.price }}</span>
+            </div>
+          </a>
+        </div>
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+</div> {% endcomment %}
