@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}
-  Wishlist | Shoe store
+  Cart | Shoe store
 {% endblock title %}
 {% block content %}
   <section class="container">
-    <h1 class="section-title">Wishlist</h1>
+    <h1 class="section-title">Cart</h1>
   </section>
   <section class="container">
-    {% if wishlist %}
-    <div class="items">
+    {% if cart %}
+    <div class="cart">
       <ul class="items-list">
-        {% for item in wishlist %}
+        {% for item in cart %}
         <li class="items-list-item">
           <div class="item">
             <button class="item-remove-btn">X</button>
-            <a href="/items/{{ item.id }}">
+            <a href="/items/{{item.id}}">
               <img class="item-image" src="{{ item.picture.url }}" alt="shoes">
               <div class="item-description">
                 <span class="title">{{ item.title }}</span>

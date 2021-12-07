@@ -1,15 +1,28 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-  Item-title | Our site
+  {{ item.title }} | Our site
 {% endblock title %}
 {% block content %}
-  <div class="container">
+  <section class="container">
+    <h1 class="section-title">{{ item.title }}</h1>
+  </section>
+  <section class="container flex-column">
     {% if error_message %}
       {{ error_message }}
     {% endif %}
     {% if item %}
-      {{ item.title }}
+      <img class="item-full-image" src="{{ item.picture }}" alt="image">
+      <br>
+      <div class="item-full-description">
+        <p>Price: ${{item.price}}</p>
+        <p>Size: {{item.size}}</p>
+        <p>Color: {{item.color}}</p>
+        <p>Rating: {{item.rating}}</p>
+        <br>
+        <p>Description:</p>
+        <p>— {{item.description}}</p>
+      </div>
     {% endif %}
-  </div>
+  </section>
 {% endblock content %}
