@@ -12,7 +12,7 @@
       {{ error_message }}
     {% endif %}
     {% if item %}
-      <img class="item-full-image" src="{{ item.picture }}" alt="image">
+      <img class="item-full-image" src="{{ item.picture.url }}" alt="image">
       <br>
       <div class="item-full-description">
         <p>Price: ${{item.price}}</p>
@@ -27,6 +27,7 @@
       <button class="btn btn-success">Add to cart</button>
       <br>
       <button class="btn btn-primary">Add to wishlist</button>
+      <br>
     {% endif %}
   </section>
 {% endblock content %}

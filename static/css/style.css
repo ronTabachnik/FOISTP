@@ -203,6 +203,7 @@ img {
   width: 100%;
   max-width: calc(0.5 * var(--max-width));
   margin: auto;
+  border-radius: 1rem;
 }
 
 .item-description {
