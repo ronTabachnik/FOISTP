@@ -245,19 +245,33 @@ img {
   color: var(--light);
 }
 
+.btn {
+  width: 100%;
+  height: 2rem;
+  color: inherit;
+  background-color: var(--dark);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 .btn-primary {
+  border: 2px solid var(--primary-color);
 }
 
 .btn-default {
+  border: 2px solid var(--light);
 }
 
 .btn-danger {
+  border: 2px solid var(--danger-color);
 }
 
 .btn-warning {
+  border: 2px solid var(--warning-color);
 }
 
 .btn-success {
+  border: 2px solid var(--success-color);
 }
 
 /* navbar */
