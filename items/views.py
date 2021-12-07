@@ -1,15 +1,14 @@
 from django.shortcuts import render
 
-from items.models import Item
-
-# Create your views here.
+from items.models import Category, Item
 
 
 def home(request):
     items = Item.objects.all()[:20]
-
+    categories = Category.objects.all()
     context = {
-        'items': items
+        'items': items,
+        'categories': categories,
     }
     return render(request, 'items/home.html', context)
 
