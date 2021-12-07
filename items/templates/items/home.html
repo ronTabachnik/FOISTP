@@ -26,11 +26,15 @@
         <i class="fas fa-book-open"></i>
         <span>Category</span>
       </div>
-      <ul>
-        <li><a href="#">Boots</a></li>
-        <li><a href="#">Sneakers</a></li>
-        <li><a href="#">Boat Shoes</a></li>
-      </ul>
+      {% if categories %}
+        <ul>
+          {% for category in categories %}
+            <li><a href="#">{{ category.name }}</a></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <span>No categories available</span>
+      {% endif %}
     </aside>
 
     {% if items %}
