@@ -37,3 +37,10 @@ def wishlist(request):
         'wishlist': wishlist
     }
     return render(request, 'users/wishlist.html', context)
+
+
+def cart(request):
+    context = {
+        'cart': None
+    }
+    return render(request, 'users/cart.html', context)

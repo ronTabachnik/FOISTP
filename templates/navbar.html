@@ -3,16 +3,25 @@
   <a href="{% url 'home' %}" id="nav-logo"><i class="fas fa-store nav-logo"></i></a>
   <ul id="nav-menu">
     <li>
+      <a href="{% url 'home' %}">Home</a>
+    </li>
+    <li>
       <a href="{% url 'home' %}">Catalog</a>
     </li>
     <li>
-      <a href="{% url 'home' %}">Cart page</a>
+      <a href="{% url 'cart' %}">Cart</a>
     </li>
     <li>
-      <a href="{% url 'wishlist' %}">Whishlist</a>
+      <a href="{% url 'wishlist' %}">Wishlist</a>
     </li>
     <li>
       <a href="{% url 'profile' %}">My profile</a>
+    </li>
+    <li>
+      <a href="{% url 'home' %}">Admin dashboard</a>
+    </li>
+    <li>
+      <a href="{% url 'home' %}">Store dashboard</a>
     </li>
     <li>
       <a href="{% url 'login' %}">Login</a>
