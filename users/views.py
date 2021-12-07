@@ -14,6 +14,7 @@ def register(request):
 
 def wishlist(request):
     if not request.user.is_authenticated or not hasattr(request.user, 'registered_customer'):
+        print(request.user)
         return redirect('login')
     User = get_user_model()
     user = User.objects.get(username=request.user)

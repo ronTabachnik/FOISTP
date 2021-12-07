@@ -38,7 +38,7 @@
         {% for item in items %}
           <li class="items-list-item">
             <div class="item">
-              <a href="items/item">
+              <a href="items/{{ item.id }}">
                 <img class="item-image" src="{{ item.picture.url }}" alt="shoes">
                 <div class="item-description">
                   <span class="title">{{ item.title }}</span>
