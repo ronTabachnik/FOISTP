@@ -1,13 +1,23 @@
 from django.shortcuts import render
 
-# Create your views here.
+from items.models import Category, Item
 
 
 def home(request):
-    context = {}
-    return render(request, 'items/home.html', context=context)
+    items = Item.objects.all()[:20]
+    categories = Category.objects.all()
+    context = {
+        'items': items,
+        'categories': categories,
+    }
+    return render(request, 'items/home.html', context)
 
 
-def item(request, item):
+def item_detail(request, item_id):
     context = {}
-    return render(request, 'items/item.html', context=context)
+    try:
+        item = Item.objects.get(pk=item_id)
+        context['item'] = item
+    except Item.DoesNotExist:
+        context['error_message'] = 'Failed to fetch an item.'
+    return render(request, 'items/item.html', context)

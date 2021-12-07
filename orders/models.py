@@ -1,7 +1,6 @@
 import uuid
 from django.db import models
 from items.models import Item
-from users.models import Customer
 
 
 class OrderStatus(models.Model):
@@ -11,6 +10,9 @@ class OrderStatus(models.Model):
     create = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(
         default=uuid.uuid4, unique=True, primary_key=True, editable=True)
+
+    class Meta:
+        verbose_name_plural = 'Order statuses'
 
     def __str__(self):
         return self.status
@@ -22,7 +24,6 @@ class Order(models.Model):
     status = models.ForeignKey(
         OrderStatus, on_delete=models.SET_NULL, blank=True, null=True)
     create = models.DateTimeField(auto_now_add=True)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=True)
 
