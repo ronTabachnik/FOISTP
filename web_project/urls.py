@@ -4,10 +4,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('u/', include('users.urls')),
     path('r/', include('requests_.urls')),
     path('o/', include('orders.urls')),
-    path('i/', include('items.urls')),
-    path('u/', include('users.urls')),
     path('', include('items.urls')),
     path('admin/', admin.site.urls),
 ]
