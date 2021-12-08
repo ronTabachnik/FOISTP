@@ -244,6 +244,7 @@ img {
   border: none;
   border-radius: 0.75rem;
   color: var(--light);
+  text-align: center;
 }
 
 .btn {

@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from items.models import Item
-from users.utils import add_to_wishlist, remove_from_wishlist
+from users.utils import add_to_cart, add_to_wishlist, remove_from_cart, remove_from_wishlist
 
 import logging
 from items.models import Item
@@ -65,6 +65,7 @@ def remove_from_wishlist_view(request, item_id):
     return redirect('wishlist')
 
 
+@login_required
 def cart_view(request):
     if not hasattr(request.user, 'registered_customer'):
         return redirect('login')
@@ -79,9 +80,20 @@ def cart_view(request):
 
 @login_required
 def add_to_cart_view(request, item_id):
-    pass
+    item = get_object_or_404(Item, pk=item_id)
+    if not hasattr(request.user, 'registered_customer'):
+        return render(request, 'users/checkout.html', context={'item': item})
+    user = request.user
+    registered_customer = user.registered_customer
+    add_to_cart(registered_customer, item)
+    return redirect('cart')
 
 
 @login_required
 def remove_from_cart_view(request, item_id):
-    pass
+    if not hasattr(request.user, 'registered_customer'):
+        return redirect('login')
+    user = request.user
+    registered_customer = user.registered_customer
+    remove_from_cart(registered_customer, item_id)
+    return redirect('cart')
