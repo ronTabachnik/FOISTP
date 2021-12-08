@@ -14,8 +14,8 @@
         {% for item in wishlist %}
         <li class="items-list-item">
           <div class="item">
-            <button class="item-remove-btn">X</button>
-            <a href="/items/{{ item.id }}">
+            <a class="item-remove-btn" href="{% url 'remove_from_wishlist' item.id %}">X</a>
+            <a href="{% url 'item' item.id %}">
               <img class="item-image" src="{{ item.picture.url }}" alt="shoes">
               <div class="item-description">
                 <span class="title">{{ item.title }}</span>

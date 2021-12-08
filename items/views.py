@@ -3,7 +3,7 @@ from django.shortcuts import render
 from items.models import Category, Item
 
 
-def home(request):
+def home_view(request):
     items = Item.objects.all()[:20]
     categories = Category.objects.all()
     context = {
@@ -13,7 +13,7 @@ def home(request):
     return render(request, 'items/home.html', context)
 
 
-def item_detail(request, item_id):
+def item_detail_view(request, item_id):
     context = {}
     try:
         item = Item.objects.get(pk=item_id)
