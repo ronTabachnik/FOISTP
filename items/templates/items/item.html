@@ -24,9 +24,8 @@
         <p>— {{item.description}}</p>
       </div>
       <br>
+      <a class="btn btn-success" href="{% url 'add_to_cart' item.id %}">Add to cart</a>
       <a class="btn btn-success" href="{% url 'add_to_wishlist' item.id %}">Add to wishlist</a>
-      <br>
-      <button class="btn btn-primary">Add to wiscarthlist</button>
       <br>
     {% endif %}
   </section>

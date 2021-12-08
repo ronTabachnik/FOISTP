@@ -244,6 +244,7 @@ img {
   border: none;
   border-radius: 0.75rem;
   color: var(--light);
+  text-align: center;
 }
 
 .btn {
@@ -253,6 +254,7 @@ img {
   background-color: var(--dark);
   border-radius: 5px;
   cursor: pointer;
+  text-align: center;
 }
 
 .btn-primary {

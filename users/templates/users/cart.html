@@ -9,12 +9,12 @@
   </section>
   <section class="container">
     {% if cart %}
-    <div class="cart">
+    <div class="items">
       <ul class="items-list">
         {% for item in cart %}
         <li class="items-list-item">
           <div class="item">
-            <button class="item-remove-btn">X</button>
+            <a class="item-remove-btn" href="{% url 'remove_from_cart' item.id %}">X</a>
             <a href="/items/{{item.id}}">
               <img class="item-image" src="{{ item.picture.url }}" alt="shoes">
               <div class="item-description">
