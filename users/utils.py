@@ -31,6 +31,10 @@ def remove_from_cart(registered_customer, item_id):
     registered_customer.cart.remove(item)
 
 
-def chekcout(registered_customer):
-    current_time = datetime.datetime.now()
-    order = Order.objects.create()
+def checkout(cart):
+    order = Order.objects.create(
+        last_status=datetime.datetime.now(),
+        status=Order.Status.Processing)
+    order.save()
+    order.items.add(*cart)
+    return order
