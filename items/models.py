@@ -19,7 +19,7 @@ class Category(models.Model):
     description = models.TextField(blank=True, null=True)
     picture = models.ImageField(
         upload_to=get_category_picture_path, default='images/default.jpg')
-    create = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
 
@@ -45,7 +45,7 @@ class Item(models.Model):
     count_in_pack = models.IntegerField(default=0, blank=True, null=True)
     rating = models.DecimalField(
         max_digits=3, decimal_places=1, default=0.0, blank=True, null=True)
-    create = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
 

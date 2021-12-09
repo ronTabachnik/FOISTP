@@ -2,8 +2,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from items.models import Item
 from users.utils import add_to_cart, add_to_wishlist, remove_from_cart, remove_from_wishlist
-
-import logging
 from items.models import Item
 from users.utils import add_to_wishlist
 

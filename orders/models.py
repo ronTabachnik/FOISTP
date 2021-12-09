@@ -7,7 +7,7 @@ class OrderStatus(models.Model):
     status = models.CharField(
         max_length=200, unique=True, blank=False, null=False)
     description = models.TextField(blank=True, null=True)
-    create = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(
         default=uuid.uuid4, unique=True, primary_key=True, editable=True)
 
@@ -23,9 +23,9 @@ class Order(models.Model):
     items = models.ManyToManyField(Item)
     status = models.ForeignKey(
         OrderStatus, on_delete=models.SET_NULL, blank=True, null=True)
-    create = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=True)
 
     def __str__(self):
-        return f'{self.customer}: {self.status}'
+        return f'{self.created}: {self.status}'
