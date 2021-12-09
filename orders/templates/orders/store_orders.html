@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-  Orders | Our site
+  Store orders | Our site
 {% endblock title %}
 {% block content %}
   <div class="container">
-    <h1>Orders</h1>
+    <h1>Store orders</h1>
     {% if orders %}
       <ul>
         {% for order in orders %}
-          <a href="{% url 'order' order.id %}">
+          <a href="{% url 'store_order' order.id %}">
             <li>{{ order.created }}</li>
           </a>
         {% endfor %}

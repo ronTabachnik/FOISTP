@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
-{% comment %} Link return request page {% endcomment %}
 {% load static %}
 {% block title %}
-  Order | Our site
+  Store orders | Our site
 {% endblock title %}
 {% block content %}
   <div class="container">
@@ -11,7 +10,7 @@
       {{ order.customer }}
       {{ order.status }}
       {{ order.customer.address }}
-      <a href="{% url 'orders' %}">Request for return</a>
+      <a href="{% url 'orders' %}">Change status</a>
     {% else %}
       <p>Order does not exist</p>
     {% endif %}
