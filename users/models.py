@@ -83,4 +83,4 @@ class Business(models.Model):
         verbose_name_plural = 'Businesses'
 
     def __str__(self):
-        return f'{self.store_name} {self.user}'
+        return f'{self.store_name}'
