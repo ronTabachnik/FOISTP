@@ -95,3 +95,11 @@ def remove_from_cart_view(request, item_id):
     registered_customer = user.registered_customer
     remove_from_cart(registered_customer, item_id)
     return redirect('cart')
+
+
+@login_required
+def checkout_view(request):
+    if not hasattr(request.user, 'registered_customer'):
+        return redirect('login')
+    user = request.user
+    registered_customer = user.registered_customer

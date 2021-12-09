@@ -1,5 +1,8 @@
+import datetime
+
 import logging
 from items.models import Item
+from orders.models import Order
 
 
 def add_to_wishlist(registered_customer, item):
@@ -26,3 +29,8 @@ def remove_from_cart(registered_customer, item_id):
         logging.error(
             f'Failed to remove item from the user {registered_customer.username} cart. (Item with id:{item_id} does not exists.)')
     registered_customer.cart.remove(item)
+
+
+def chekcout(registered_customer):
+    current_time = datetime.datetime.now()
+    order = Order.objects.create()
