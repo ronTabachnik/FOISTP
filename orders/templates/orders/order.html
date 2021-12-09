@@ -9,7 +9,7 @@
     {% if order %}
       {{ order.created }}
       {{ order.customer }}
-      {{ order.status }}
+      {{ order.get_status_display }}
       {{ order.customer.address }}
       <a href="{% url 'orders' %}">Request for return</a>
     {% else %}
