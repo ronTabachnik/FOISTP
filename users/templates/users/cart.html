@@ -7,7 +7,7 @@
   <section class="container">
     <h1 class="section-title">Cart</h1>
   </section>
-  <section class="container">
+  <section class="container flex-column">
     {% if cart %}
     <div class="items">
       <ul class="items-list">
@@ -26,8 +26,9 @@
           </div>
         </li>
         {% endfor %}
-      </ul> 
+      </ul>
     </div>
+    <a class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
     {% endif %}
   </section>
 {% endblock content %}

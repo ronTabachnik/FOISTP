@@ -1,12 +1,19 @@
-{% comment %} To implement {% endcomment %}
-{% comment %} Link return request page {% endcomment %}
-
 {% extends 'base.html' %}
+{% comment %} Link return request page {% endcomment %}
 {% load static %}
 {% block title %}
   Order | Our site
 {% endblock title %}
 {% block content %}
   <div class="container">
+    {% if order %}
+      {{ order.created }}
+      {{ order.customer }}
+      {{ order.status }}
+      {{ order.customer.address }}
+      <a href="{% url 'orders' %}">Request for return</a>
+    {% else %}
+      <p>Order does not exist</p>
+    {% endif %}
   </div>
 {% endblock content %}

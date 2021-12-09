@@ -1,5 +1,3 @@
-{% comment %} Link to list orders page {% endcomment %}
-
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
@@ -16,5 +14,6 @@
     {% if avatar %}
       <img  src="{{ avatar.url }}" alt="profile-avatar">
     {% endif %}
+    <a href="{% url 'orders' %}">Orders</a>
   </div>
 {% endblock content %}

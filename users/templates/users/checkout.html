@@ -4,7 +4,31 @@
     Checkout | Our site
 {% endblock title %}
 {% block content %}
-    <div class="container">
-        Checkout
+    <section class="container">
+        <h1 class="section-title">Checkout</h1>
+    </section>
+    <div class="container flex-column">
+        {% if order %}
+        <div class="items">
+        <ul class="items-list">
+            {% for item in order %}
+            <li class="items-list-item">
+            <div class="item">
+                <a class="item-remove-btn" href="{% url 'remove_from_cart' item.id %}">X</a>
+                <a href="/items/{{item.id}}">
+                <img class="item-image" src="{{ item.picture.url }}" alt="shoes">
+                <div class="item-description">
+                    <span class="title">{{ item.title }}</span>
+                    <span class="rating">Rating: {{ item.rating }}</span>
+                    <span class="price">${{ item.price }}</span>
+                </div>
+                </a>
+            </div>
+            </li>
+            {% endfor %}
+        </ul>
+        </div>
+        <a class="btn btn-success" href="#">Pay</a>
+        {% endif %}
     </div>
 {% endblock content %}

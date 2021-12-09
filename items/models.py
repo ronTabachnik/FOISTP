@@ -1,7 +1,7 @@
 import os
 import uuid
 from django.db import models
-
+from django.contrib.auth.models import User
 from colors.models import Color
 
 
@@ -19,7 +19,7 @@ class Category(models.Model):
     description = models.TextField(blank=True, null=True)
     picture = models.ImageField(
         upload_to=get_category_picture_path, default='images/default.jpg')
-    create = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
 
@@ -42,10 +42,12 @@ class Item(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, blank=True, null=True)
     manufacturer = models.CharField(max_length=200, blank=True, null=True)
+    vendor = models.ForeignKey(
+        'users.Business', on_delete=models.CASCADE)
     count_in_pack = models.IntegerField(default=0, blank=True, null=True)
     rating = models.DecimalField(
         max_digits=3, decimal_places=1, default=0.0, blank=True, null=True)
-    create = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
 

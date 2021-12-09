@@ -1,9 +1,10 @@
+import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from items.models import Item
-from users.utils import add_to_cart, add_to_wishlist, remove_from_cart, remove_from_wishlist
-
-import logging
+from orders.models import Order
+from users.utils import add_to_cart, add_to_wishlist, checkout, remove_from_cart, remove_from_wishlist
 from items.models import Item
 from users.utils import add_to_wishlist
 
@@ -97,3 +98,17 @@ def remove_from_cart_view(request, item_id):
     registered_customer = user.registered_customer
     remove_from_cart(registered_customer, item_id)
     return redirect('cart')
+
+
+@login_required
+def checkout_view(request):
+    if not hasattr(request.user, 'registered_customer'):
+        return redirect('login')
+    user = request.user
+    registered_customer = user.registered_customer
+    cart = registered_customer.cart.all()
+    order = checkout(cart)
+    context = {
+        'order': order.items.all()
+    }
+    return render(request, 'users/checkout.html', context)
