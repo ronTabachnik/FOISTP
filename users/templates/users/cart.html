@@ -11,7 +11,7 @@
     {% if cart %}
     <div class="items">
       <ul class="items-list">
-        {% for item in cart %}
+        {% for item in cart.items.all %}
         <li class="items-list-item">
           <div class="item">
             <a class="item-remove-btn" href="{% url 'remove_from_cart' item.id %}">X</a>

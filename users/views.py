@@ -73,7 +73,11 @@ def cart_view(request):
         return redirect('login')
     user = request.user
     registered_customer = user.registered_customer
-    cart = registered_customer.cart.all()
+    cart = registered_customer.cart
+    if not cart:
+        cart = Order.objects.create(status=Order.Status.In_cart)
+        registered_customer.cart = cart
+        registered_customer.save()
     context = {
         'cart': cart
     }
