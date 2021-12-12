@@ -1,3 +1,4 @@
+from email.policy import default
 import uuid
 from django.db import models
 from items.models import Item
@@ -25,5 +26,6 @@ class Order(models.Model):
 class OrderItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=0, blank=False)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
