@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Review | Our site
+{% endblock title %}
+{% block content %}
+  <form method='post'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type='submit'>Post review</button>
+  </form>
+{% endblock content %}

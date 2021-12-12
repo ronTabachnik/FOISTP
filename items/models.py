@@ -1,5 +1,6 @@
 import os
 import uuid
+from statistics import mean
 from django.db import models
 from django.contrib.auth.models import User
 from colors.models import Color
@@ -45,11 +46,30 @@ class Item(models.Model):
     vendor = models.ForeignKey(
         'users.Business', on_delete=models.CASCADE)
     count_in_pack = models.IntegerField(default=0, blank=True, null=True)
-    rating = models.DecimalField(
-        max_digits=3, decimal_places=1, default=0.0, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
 
+    @property
+    def rating(self):
+        reviews = self.reviews.all()
+        if not reviews:
+            return 0
+        return mean(review.grade for review in self.reviews.all())
+
     def __str__(self):
         return self.title
+
+
+class Review(models.Model):
+    item = models.ForeignKey(
+        Item, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey('users.RegisteredCustomer',
+                             on_delete=models.CASCADE)
+    grade = models.DecimalField(max_digits=2, decimal_places=1, default=0.0)
+    text = models.TextField(blank=True, null=True)
+    id = models.UUIDField(default=uuid.uuid4, unique=True,
+                          primary_key=True, editable=False)
+
+    def __str__(self):
+        return f'{self.item}: {self.user}'
