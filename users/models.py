@@ -24,7 +24,8 @@ class RegisteredCustomer(models.Model):
         upload_to=get_customer_avatar_path, default='images/default.jpg')
     wishlist = models.ManyToManyField(
         Item, blank=True, related_name='wishlist')
-    cart = models.ManyToManyField(Item, blank=True, related_name='cart')
+    cart = models.ForeignKey(
+        Order, on_delete=models.SET_NULL, blank=True, null=True)
     ban_status = models.BooleanField(default=False)
 
     def __str__(self):
