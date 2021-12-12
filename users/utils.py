@@ -2,7 +2,7 @@ import datetime
 
 import logging
 from items.models import Item
-from orders.models import Order
+from orders.models import Order, OrderItem
 
 
 def add_to_wishlist(registered_customer, item):
@@ -19,7 +19,14 @@ def remove_from_wishlist(registered_customer, item_id):
 
 
 def add_to_cart(registered_customer, item):
-    registered_customer.cart.add(item)
+    cart = registered_customer.cart
+    if not cart:
+        cart = Order.objects.create(status=Order.Status.In_cart)
+        registered_customer.cart = cart
+        registered_customer.save()
+    order_item, _ = OrderItem.objects.get_or_create(item=item, order=cart)
+    order_item.quantity += 1
+    order_item.save()
 
 
 def remove_from_cart(registered_customer, item_id):
