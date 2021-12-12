@@ -9,7 +9,8 @@ class Order(models.Model):
         Ordered = '2', 'Ordered'
         Delivered = '3', 'Delivered'
         Processing = '4', 'Processing'
-        Error = '5', 'Error'
+        In_cart = '5', 'In cart'
+        Error = '6', 'Error'
     last_status = models.DateField(blank=True, null=True)
     status = models.CharField(
         max_length=2, choices=Status.choices, default=Status.Error)
