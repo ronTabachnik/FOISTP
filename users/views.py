@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from items.models import Item
 from orders.models import Order
+from users.models import Customer
 from users.utils import add_to_cart, add_to_wishlist, checkout, remove_from_cart, remove_from_wishlist
 from items.models import Item
 from users.utils import add_to_wishlist
@@ -108,7 +109,13 @@ def checkout_view(request):
     registered_customer = user.registered_customer
     cart = registered_customer.cart.all()
     order = checkout(cart)
+
+    # customer = Customer.objects.create(user=user)
+    # customer.order = order
+    # customer.save()
+
     context = {
-        'order': order.items.all()
+        'order_items': order.items.all(),
+        # 'customer': customer
     }
     return render(request, 'users/checkout.html', context)
