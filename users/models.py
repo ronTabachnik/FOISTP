@@ -17,20 +17,6 @@ def get_business_avatar_path(instance, filename):
     return os.path.join('users', str(instance.user), 'businesses', str(instance.store_name), 'emblems', filename)
 
 
-class RegisteredCustomer(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name='registered_customer')
-    avatar = models.ImageField(
-        upload_to=get_customer_avatar_path, default='images/default.jpg')
-    wishlist = models.ManyToManyField(
-        Item, blank=True, related_name='wishlist')
-    cart = models.ManyToManyField(Item, blank=True, related_name='cart')
-    ban_status = models.BooleanField(default=False)
-
-    def __str__(self):
-        return str(self.user)
-
-
 class Administrator(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
@@ -51,6 +37,23 @@ class CustomerAddress(models.Model):
 
     def __str__(self):
         return f'{self.zip}'
+
+
+class RegisteredCustomer(models.Model):
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='registered_customer')
+    avatar = models.ImageField(
+        upload_to=get_customer_avatar_path, default='images/default.jpg')
+    wishlist = models.ManyToManyField(
+        Item, blank=True, related_name='wishlist')
+    cart = models.ForeignKey(
+        Order, on_delete=models.SET_NULL, blank=True, null=True)
+    ban_status = models.BooleanField(default=False)
+    saved_address = models.ForeignKey(
+        CustomerAddress, on_delete=models.SET_NULL, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.user)
 
 
 class Customer(models.Model):
