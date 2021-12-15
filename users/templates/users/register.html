@@ -2,9 +2,13 @@
 {% comment %} To implement {% endcomment %}
 {% load static %}
 {% block title %}
-    Register | Our site
+  Register | Our site
 {% endblock title %}
 {% block content %}
-    <div class="container">
-    </div>
+  <section class="container">
+    <form action="POST">
+      {{ formset }}
+    </form>
+    <a href="{% url 'register_business' %}">Register as Business</a>
+  </section>
 {% endblock content %}

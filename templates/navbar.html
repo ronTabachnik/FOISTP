@@ -1,5 +1,5 @@
 {% load static %}
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-lg">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#toggler" aria-controls="toggler" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -13,13 +13,13 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'home' %}">Catalog</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'cart' %}">Cart</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'wishlist' %}">Wishlist</a>
-        </li>
         {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'cart' %}">Cart</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'wishlist' %}">Wishlist</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'profile' %}">Profile</a>
           </li>
