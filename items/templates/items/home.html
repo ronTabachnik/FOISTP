@@ -6,13 +6,13 @@
 {% block content %}
   <section class="container">
     <div class="row my-3">
-      <div class="col-4">
+      <div class="col-8">
         <div class="input-group">
           <span class="input-group-text bg-dark"><i class="fas fa-search"></i></span>
           <input class="form-control bg-dark text-light" type="text" id="search" placeholder="Search">
         </div>
       </div>
-      <div class="col-8">
+      <div class="col-4">
         <div class="input-group">
           <span class="input-group-text bg-dark text-light">Sort by:</span>
           <select class="form-select bg-dark text-light" aria-labelledby="sortby">
@@ -24,42 +24,51 @@
       </div>
     </div>
   </section>
-  <section class="container" id="catalog-content">
-    <aside class="catalog">
-      <div class="title">
-        <i class="fas fa-book-open"></i>
-        <span>Category</span>
+  <section class="container">
+    <div class="row">
+      <div class="col-3">
+        <aside class="catalog">
+          <div class="title mb-2">
+            <i class="fas fa-book-open me-2"></i>
+            <span>Category</span>
+          </div>
+          {% if categories %}
+            <ul class="list-group">
+              {% for category in categories %}
+                <li class="list-group-item"><a href="#">{{ category.name }}</a></li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <span>No categories available</span>
+          {% endif %}
+        </aside>
       </div>
-      {% if categories %}
-        <ul>
-          {% for category in categories %}
-            <li><a href="#">{{ category.name }}</a></li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <span>No categories available</span>
-      {% endif %}
-    </aside>
-
-    {% if items %}
-      <div class="items">
-        <ul class="items-list">
-        {% for item in items %}
-          <li class="items-list-item">
-            <div class="item">
-              <a href="{% url 'item' item.id %}">
-                <img class="item-image" src="{{ item.picture.url }}" alt="shoes">
-                <div class="item-description">
-                  <span class="title">{{ item.title }}</span>
-                  <span class="rating">Rating: {{ item.rating }}</span>
-                  <span class="price">${{ item.price }}</span>
+      <div class="col-9">
+        {% if items %}
+          <div class="d-flex justify-content-evenly">
+            {% for item in items %}
+              <div class="card">
+                <a href="{% url 'item' item.id %}">
+                  <img class="card-img" src="{{ item.picture.url }}" alt="shoes">
+                </a>
+                <div class="card-body bg-dark">
+                  <h5 class="card-title">
+                    <a href="{% url 'item' item.id %}">{{ item.title }}</a>
+                  </h5>
+                  <p class="card-text"> 
+                    <span>Rating: {{ item.rating }}</span>
+                    <span style="float: right;">${{ item.price }}</span>
+                  </p>
                 </div>
-              </a>
-            </div>
-          </li>
-        {% endfor %}
-        </ul>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <h3>No items available!</h3>
+        {% endif %}
       </div>
-    {% endif %}
+    </div>
+
+    
   </section>
 {% endblock content %}

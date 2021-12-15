@@ -5,28 +5,41 @@
 {% endblock title %}
 {% block content %}
   <section class="container">
-    <h1 class="section-title">{{ item.title }}</h1>
+    <div class="row">
+      <div class="section-title my-3">
+        <h1>{{ item.title }}</h1>
+      </div>
+    </div>
   </section>
-  <section class="container flex-column">
+  <section class="container">
     {% if error_message %}
       {{ error_message }}
     {% endif %}
     {% if item %}
-      <img class="item-full-image" src="{{ item.picture.url }}" alt="image">
-      <br>
-      <div class="item-full-description">
-        <p>Price: ${{item.price}}</p>
-        <p>Size: {{item.size}}</p>
-        <p>Color: {{item.color}}</p>
-        <p>Rating: {{item.rating}}</p>
-        <br>
-        <p>Description:</p>
-        <p>— {{item.description}}</p>
+      <div class="card mb-3">
+        <div class="row w-100 flex-row align-items-stretch">
+          <div class="col-md-4">
+            <img src="{{ item.picture.url }}" class="my-2 img-fluid rounded" alt="...">
+          </div>
+          <div class="col">
+            <div class="card-body">
+              <h5 class="card-title">Price: ${{item.price}}</h5>
+              <p class="card-text">{{item.description}}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Size: {{item.size}}</li>
+              <li class="list-group-item">Color: {{item.color}}</li>
+              <li class="list-group-item">Price: ${{item.price}}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card-footer w-100">
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a class="btn btn-outline-success me-md-2" href="{% url 'add_to_cart' item.id %}">Add to cart</a>
+            <a class="btn btn-outline-primary" href="{% url 'add_to_wishlist' item.id %}">Add to wishlist</a>
+          </div>
+        </div>
       </div>
-      <br>
-      <a class="btn btn-success" href="{% url 'add_to_cart' item.id %}">Add to cart</a>
-      <a class="btn btn-success" href="{% url 'add_to_wishlist' item.id %}">Add to wishlist</a>
-      <br>
     {% endif %}
   </section>
 {% endblock content %}
