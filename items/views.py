@@ -9,12 +9,16 @@ def home_view(request):
     context = {
         'items': items,
         'categories': categories,
+        'current_user': request.user,
+
     }
     return render(request, 'items/home.html', context)
 
 
 def item_detail_view(request, item_id):
-    context = {}
+    context = {
+        'current_user': request.user,
+    }
     try:
         item = Item.objects.get(pk=item_id)
         context['item'] = item
@@ -42,5 +46,8 @@ def review_view(request, item_id):
         return redirect('item', item_id)
     else:
         form = ReviewForm()
-    context = {'form': form}
+    context = {
+        'form': form,
+        'current_user': user,
+    }
     return render(request, 'items/review.html', context)
