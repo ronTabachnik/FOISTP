@@ -13,14 +13,14 @@
     <div class="row">
       {% if cart %}
         <div class="d-flex justify-content-evenly">
-          {% for item in cart.items.all %}
+          {% for cart_item in cart.items.all %}
             <div class="card">
-              <img class="card-img" src="{{ item.picture.url }}" alt="shoes">
+              <img class="card-img" src="{{ cart_item.item.picture.url }}" alt="shoes">
               <div class="card-body bg-dark">
-                <h5 class="card-title">{{ item.title }}</h5>
+                <h5 class="card-title">{{ cart_item.item.title }}</h5>
                 <p class="card-text"> 
-                  <span>Rating: {{ item.rating }}</span>
-                  <span style="float: right;">${{ item.price }}</span>
+                  <span>Rating: {{ cart_item.item.rating }}</span>
+                  <span style="float: right;">${{ cart_item.item.price }}</span>
                 </p>
               </div>
             </div>
