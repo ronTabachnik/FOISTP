@@ -18,7 +18,8 @@ def profile_view(request):
     registered_customer = user.registered_customer
     context = {
         'username': user.username,
-        'avatar': registered_customer.avatar
+        'avatar': registered_customer.avatar,
+        'current_user': user,
     }
     return render(request, 'users/profile.html', context)
 
@@ -41,7 +42,8 @@ def wishlist_view(request):
     registered_customer = user.registered_customer
     wishlist = registered_customer.wishlist.all()
     context = {
-        'wishlist': wishlist
+        'wishlist': wishlist,
+        'current_user': user,
     }
     return render(request, 'users/wishlist.html', context)
 
@@ -79,7 +81,8 @@ def cart_view(request):
         registered_customer.cart = cart
         registered_customer.save()
     context = {
-        'cart': cart
+        'cart': cart,
+        'current_user': user,
     }
     return render(request, 'users/cart.html', context)
 
@@ -120,6 +123,7 @@ def checkout_view(request):
 
     context = {
         'order_items': order.items.all(),
+        'current_user': user,
         # 'customer': customer
     }
     return render(request, 'users/checkout.html', context)

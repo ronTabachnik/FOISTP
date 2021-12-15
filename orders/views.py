@@ -12,7 +12,8 @@ def orders_view(request):
     customers = Customer.objects.filter(user=user)
     orders = [customer.order for customer in customers]
     context = {
-        'orders': orders
+        'orders': orders,
+        'current_user': user,
     }
     return render(request, 'orders/orders.html', context)
 
@@ -20,7 +21,8 @@ def orders_view(request):
 def order_detail_view(request, order_id):
     order = Order.objects.filter(pk=order_id).first()
     context = {
-        'order': order
+        'order': order,
+        'current_user': request.user,
     }
     return render(request, 'orders/order.html', context)
 
@@ -36,7 +38,8 @@ def store_orders_view(request):
     for item in items:
         orders.update(item.order_set.all())
     context = {
-        'orders': orders
+        'orders': orders,
+        'current_user': user,
     }
     return render(request, 'orders/store_orders.html', context)
 
@@ -44,6 +47,7 @@ def store_orders_view(request):
 def store_order_detail_view(request, order_id):
     order = Order.objects.filter(pk=order_id).first()
     context = {
-        'order': order
+        'order': order,
+        'current_user': request.user,
     }
     return render(request, 'orders/store_order.html', context)
