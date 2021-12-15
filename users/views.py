@@ -4,10 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from items.models import Item
 from orders.models import Order
-from users.models import Customer
 from users.utils import add_to_cart, add_to_wishlist, checkout, remove_from_cart, remove_from_wishlist
-from items.models import Item
-from users.utils import add_to_wishlist
+from users.forms import BusinessFrom
 
 
 @login_required
@@ -32,6 +30,21 @@ def login_view(request):
 def register_view(request):
     context = {}
     return render(request, 'users/register.html', context)
+
+
+def register_as_business_view(request):
+    if request.method == 'POST':
+        formset = BusinessFrom(request.POST, request.FILES)
+        if formset.is_valid():
+            pass
+            # save pls form in database
+    else:
+        formset = BusinessFrom()
+
+    context = {
+        'formset': formset
+    }
+    return render(request, 'users/register-business.html', context)
 
 
 @login_required
@@ -81,7 +94,7 @@ def cart_view(request):
         registered_customer.cart = cart
         registered_customer.save()
     context = {
-        'cart': cart,
+        'cart': cart.items.all(),
         'current_user': user,
     }
     return render(request, 'users/cart.html', context)
@@ -89,12 +102,9 @@ def cart_view(request):
 
 @login_required
 def add_to_cart_view(request, item_id):
-    item = get_object_or_404(Item, pk=item_id)
-    if not hasattr(request.user, 'registered_customer'):
-        return render(request, 'users/checkout.html', context={'item': item})
     user = request.user
     registered_customer = user.registered_customer
-    add_to_cart(registered_customer, item)
+    add_to_cart(registered_customer, item_id)
     return redirect('cart')
 
 

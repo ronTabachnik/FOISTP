@@ -5,29 +5,35 @@
 {% endblock title %}
 {% block content %}
   <section class="container">
-    <h1 class="section-title">Wishlist</h1>
-  </section>
-  <section class="container">
-    {% if wishlist %}
-    <div class="items">
-      <ul class="items-list">
-        {% for item in wishlist %}
-        <li class="items-list-item">
-          <div class="item">
-            <a class="item-remove-btn" href="{% url 'remove_from_wishlist' item.id %}">X</a>
-            <a href="{% url 'item' item.id %}">
-              <img class="item-image" src="{{ item.picture.url }}" alt="shoes">
-              <div class="item-description">
-                <span class="title">{{ item.title }}</span>
-                <span class="rating">Rating: {{ item.rating }}</span>
-                <span class="price">${{ item.price }}</span>
-              </div>
-            </a>
-          </div>
-        </li>
-        {% endfor %}
-      </ul> 
+    <div class="row">
+      <div class="section-title my-3">
+        <h1>Wishlist</h1>
+      </div>
     </div>
-    {% endif %}
+    <div class="row">
+      {% if wishlist|length %}
+      <div class="d-flex justify-content-evenly">
+        <ul class="items-list">
+          {% for item in wishlist %}
+          <li class="items-list-item">
+            <div class="item">
+              <a class="item-remove-btn" href="{% url 'remove_from_wishlist' item.id %}">X</a>
+              <a href="{% url 'item' item.id %}">
+                <img class="item-image" src="{{ item.picture.url }}" alt="shoes">
+                <div class="item-description">
+                  <span class="title">{{ item.title }}</span>
+                  <span class="rating">Rating: {{ item.rating }}</span>
+                  <span class="price">${{ item.price }}</span>
+                </div>
+              </a>
+            </div>
+          </li>
+          {% endfor %}
+        </ul> 
+      </div>
+      {% else %}
+      <h3>Your wishlist is empty!</h3>
+      {% endif %}
+    </div>
   </section>
 {% endblock content %}

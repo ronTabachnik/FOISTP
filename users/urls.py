@@ -7,6 +7,8 @@ urlpatterns = [
     path('', views.profile_view, name='profile'),
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
+    path('register-business/', views.register_as_business_view,
+         name='register_business'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('wishlist/', views.wishlist_view, name='wishlist'),
     path('add_to_wishlist/<uuid:item_id>/',

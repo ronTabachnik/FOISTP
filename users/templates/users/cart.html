@@ -11,23 +11,28 @@
       </div>
     </div>
     <div class="row">
-      {% if cart %}
+      {% if cart|length %}
         <div class="d-flex justify-content-evenly">
-          {% for item in cart.items.all %}
+          {% for cart_item in cart %}
             <div class="card">
-              <img class="card-img" src="{{ item.picture.url }}" alt="shoes">
+              <img class="card-img" src="{{ cart_item.item.picture.url }}" alt="shoes">
               <div class="card-body bg-dark">
-                <h5 class="card-title">{{ item.title }}</h5>
+                <h5 class="card-title">{{ cart_item.item.title }}</h5>
                 <p class="card-text"> 
-                  <span>Rating: {{ item.rating }}</span>
-                  <span style="float: right;">${{ item.price }}</span>
+                  <span>Rating: {{ cart_item.item.rating }}</span>
+                  <span style="float: right;">${{ cart_item.item.price }}</span>
                 </p>
+              </div>
+              <div class="card-footer w-100">
+                <div class="d-grid">
+                  <a class="btn btn-outline-danger" href="{% url 'remove_from_cart' cart_item.id %}">Remove</a>
+                </div>
               </div>
             </div>
           {% endfor %}
         </div>
       {% else %}
-        <h3>No items available!</h3>
+        <h3>Your cart is empty!</h3>
       {% endif %}
     </div>
   </section>
