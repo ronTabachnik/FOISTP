@@ -40,21 +40,6 @@
           </div>
         </div>
       </div>
-      {% comment %} <img class="item-full-image" src="{{ item.picture.url }}" alt="image">
-      <br>
-      <div class="item-full-description">
-        <p>Price: ${{item.price}}</p>
-        <p>Size: {{item.size}}</p>
-        <p>Color: {{item.color}}</p>
-        <p>Rating: {{item.rating}}</p>
-        <br>
-        <p>Description:</p>
-        <p>— {{item.description}}</p>
-      </div>
-      <br>
-      <a class="btn btn-success" href="{% url 'add_to_cart' item.id %}">Add to cart</a>
-      <a class="btn btn-success" href="{% url 'add_to_wishlist' item.id %}">Add to wishlist</a>
-      <br> {% endcomment %}
     {% endif %}
   </section>
 {% endblock content %}
