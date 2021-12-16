@@ -5,12 +5,28 @@ import logging
 from django.shortcuts import get_object_or_404
 from items.models import Item
 from orders.models import Order, OrderItem
+from users.models import Business
 
 
 def add_to_wishlist(registered_customer, item):
     registered_customer.wishlist.add(item)
 
+def change_status(user, status:bool):
+    try:
+        user.ban_status = status  
+        user.save()
+    except user.DoesNotExist:
+        logging.error(
+            f'Failed to change user')
 
+
+def remove_business(business):
+    try:
+        business.delete()
+    except Item.DoesNotExist:
+        logging.error(
+            f'Failed to remove business {business.username} ')
+            
 def remove_from_wishlist(registered_customer, item_id):
     try:
         item = Item.objects.get(pk=item_id)
