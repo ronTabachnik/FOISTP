@@ -1,13 +1,15 @@
 import datetime
 
+from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
+from countries.models import Country
 from items.models import Item
-from orders.models import Order
-from users.models import Business, RegisteredCustomer
-from users.utils import add_to_cart, add_to_wishlist, checkout, remove_from_cart, remove_from_wishlist, change_status
-from users.forms import BusinessFrom
+from orders.models import Order, OrderItem
+from users.models import Business, Customer, CustomerAddress, RegisteredCustomer
+from users.utils import add_to_cart, add_to_wishlist, remove_from_cart, remove_from_wishlist, change_status
+from users.forms import BusinessFrom, UserRegisterForm, CustomerForm
 
 
 @login_required
@@ -111,6 +113,9 @@ def cart_view(request):
     user = request.user
     registered_customer = user.registered_customer
     cart = registered_customer.cart
+    if cart and cart.status != Order.Status.In_cart:
+        registered_customer.cart = None
+        registered_customer.save()
     if not cart:
         cart = Order.objects.create(status=Order.Status.In_cart)
         registered_customer.cart = cart
@@ -147,16 +152,48 @@ def checkout_view(request):
     user = request.user
     registered_customer = user.registered_customer
     cart = registered_customer.cart.all()
-    order = checkout(cart)
+    #order = checkout(cart)
 
-    # customer = Customer.objects.create(user=user)
-    # customer.order = order
-    # customer.save()
+    if request.method == 'POST':
+        formset = CustomerForm(request.POST, request.FILES)
+        if formset.is_valid():
+            name = formset.cleaned_data['name']
+            surname = formset.cleaned_data['surname']
+            contact_phone = formset.cleaned_data['contact_phone']
 
+            country, _ = Country.objects.get_or_create(
+                name=formset.cleaned_data['country']
+            )
+            address, _ = CustomerAddress.objects.get_or_create(
+                country=country,
+                zip=formset.cleaned_data['zip'],
+                street=formset.cleaned_data['street'],
+                building=formset.cleaned_data['building'],
+                settlement=formset.cleaned_data['settlement']
+            )
+            try:
+                customer = Customer.objects.create(
+                    user=user,
+                    name=name,
+                    surname=surname,
+                    order=cart,
+                    address=address,
+                    contact_phone=contact_phone
+                )
+                cart.set_status(Order.Status.Processing)
+                cart.save()
+            except IntegrityError:
+                print('customer alredy exists')
+            return redirect('home')
+    else:
+        formset = CustomerForm()
+
+    order_items = OrderItem.objects.filter(order=cart)
     context = {
-        'order_items': order.items.all(),
         'current_user': user,
-        # 'customer': customer
+        'order_items': order_items,
+        'total_price': cart.total_price,
+        'formset': formset
     }
     return render(request, 'users/checkout.html', context)
 

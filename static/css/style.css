@@ -82,7 +82,7 @@ img {
   width: 100%;
 }
 
-.catalog > .title {
+.title {
   font-size: 16pt;
   text-align: center;
   border: 1px solid var(--success-color);

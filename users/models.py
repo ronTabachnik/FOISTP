@@ -76,7 +76,7 @@ class Administrator(models.Model):
 
 
 class Business(models.Model):
-    #default standart status myk
+    # default standart status myk
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     contact_phone = models.CharField(max_length=20, blank=True, null=True)
     store_name = models.CharField(max_length=200, blank=False, null=True)

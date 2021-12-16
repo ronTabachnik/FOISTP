@@ -3,7 +3,6 @@ import uuid
 from django import utils
 from django.db import models
 from items.models import Item
-import datetime
 
 
 class Order(models.Model):
