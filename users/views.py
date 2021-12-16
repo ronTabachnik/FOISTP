@@ -127,6 +127,7 @@ def cart_view(request):
     if cart and cart.status != Order.Status.In_cart:
         registered_customer.cart = None
         registered_customer.save()
+        cart = registered_customer.cart
     if not cart:
         cart = Order.objects.create(status=Order.Status.In_cart)
         registered_customer.cart = cart
@@ -182,19 +183,19 @@ def checkout_view(request):
                 building=formset.cleaned_data['building'],
                 settlement=formset.cleaned_data['settlement']
             )
-            try:
-                customer = Customer.objects.create(
-                    user=user,
-                    name=name,
-                    surname=surname,
-                    order=cart,
-                    address=address,
-                    contact_phone=contact_phone
-                )
-                cart.set_status(Order.Status.Processing)
-                cart.save()
-            except IntegrityError:
-                print('customer alredy exists')
+
+            customer = Customer.objects.create(
+                user=user,
+                name=name,
+                surname=surname,
+                order=cart,
+                address=address,
+                contact_phone=contact_phone
+            )
+            cart.set_status(Order.Status.Processing)
+            cart.save()
+            print(customer)
+
             return redirect('home')
     else:
         formset = CustomerForm()

@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from .models import Order
+from .models import Order, OrderItem
 from users.models import Customer
 
 
@@ -19,9 +19,12 @@ def orders_view(request):
 
 
 def order_detail_view(request, order_id):
-    order = Order.objects.filter(pk=order_id).first()
+    order = Order.objects.get(id=order_id)
+    order_items = OrderItem.objects.filter(order=order)
+    print(order)
     context = {
         'order': order,
+        'order_items': order_items,
         'current_user': request.user,
     }
     return render(request, 'orders/order.html', context)

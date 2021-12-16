@@ -45,15 +45,23 @@ def add_to_cart(registered_customer, item_id):
         registered_customer.save()
     order_item, _ = OrderItem.objects.get_or_create(item=item, order=cart)
     order_item.quantity += 1
+
+    item_price = item.price
+    cart.total_price += item_price
+
+    cart.save()
     order_item.save()
 
 
 def remove_from_cart(registered_customer, item_id):
+    cart = registered_customer.cart
     try:
         item = OrderItem.objects.get(pk=item_id)
     except Item.DoesNotExist:
         logging.error(
             f'Failed to remove item from the user {registered_customer.user.username} cart. (Item with id:{item_id} does not exists.)')
+    cart.total_price -= item.quantity * item.item.price
+    cart.save()
     item.delete()
 
 
