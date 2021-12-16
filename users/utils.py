@@ -10,7 +10,14 @@ from orders.models import Order, OrderItem
 def add_to_wishlist(registered_customer, item):
     registered_customer.wishlist.add(item)
 
-
+def change_status(user, status:bool):
+    try:
+        user.ban_status = status  
+        user.save()
+    except user.DoesNotExist:
+        logging.error(
+            f'Failed to change user')
+            
 def remove_from_wishlist(registered_customer, item_id):
     try:
         item = Item.objects.get(pk=item_id)

@@ -4,9 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
 from items.models import Item
-from orders.models import Order, OrderItem
-from users.utils import add_to_cart, add_to_wishlist, checkout, remove_from_cart, remove_from_wishlist
-from users.forms import BusinessFrom, UserRegisterForm
+from orders.models import Order
+from users.models import Business, RegisteredCustomer
+from users.utils import add_to_cart, add_to_wishlist, checkout, remove_from_cart, remove_from_wishlist, change_status
+from users.forms import BusinessFrom
 
 
 @login_required
@@ -29,20 +30,17 @@ def login_view(request):
 
 
 def register_view(request):
-    if request.method == 'POST':
-        formset = UserRegisterForm(request.POST)
-        if formset.is_valid():
-            pass
-            # save pls form in database
-    else:
-        formset = UserRegisterForm()
-
-    context = {
-        'formset': formset
-    }
+    context = {}
     return render(request, 'users/register.html', context)
 
-#def change status
+def change_profile_status_view(request, user_id):
+    if not hasattr(request.user, 'admin_customer'):
+        return redirect('login')
+    status = True #True for ban
+    reg_user = RegisteredCustomer.objects.get(id=user_id)
+    change_status(reg_user, status)
+    return redirect('admin_dashboard')
+
 
 def register_as_business_view(request):
     if request.method == 'POST':
@@ -52,32 +50,23 @@ def register_as_business_view(request):
             store_name = formset.cleaned_data['store_name']
             email = formset.cleaned_data['email']
             password = formset.cleaned_data['password']
+            contact_phone = formset.cleaned_data['contact_phone']
             store_name = formset.cleaned_data['store_name']
             avatar = formset.cleaned_data['avatar']
-            user, _ = User.objects.create_user(username=legal_name, password=password,)
+            user = User.objects.create_user(username=legal_name, password=password, email=email)
+            business = Business.objects.create(user=user,contact_phone=contact_phone,
+            store_name=store_name,avatar=avatar)
+            business.save()           
 
-            #.objects.get_or_create_us(
-            #    user=registered_customer, item=item)
-        #    pass
-            # grade = form.cleaned_data['grade']
-            # text = form.cleaned_data['text']
-            # item = get_object_or_404(Item, pk=item_id)
-            # review, _ = Review.objects.get_or_create(
-            #     user=registered_customer, item=item)
-            # review.grade = grade
-            # review.text = text
-            # review.save()
-            #регистрация юзера
-            #Создать бизнес на основе юзера
-            # save pls form in database
-            # save()
-    else:
-        formset = BusinessFrom()
+        else:
+            formset = BusinessFrom()
 
     context = {
         'formset': formset
     }
     return render(request, 'users/register-business.html', context)
+
+
 
 
 @login_required
@@ -135,8 +124,6 @@ def cart_view(request):
 
 @login_required
 def add_to_cart_view(request, item_id):
-    if not hasattr(request.user, 'registered_customer'):
-        return redirect('login')
     user = request.user
     registered_customer = user.registered_customer
     add_to_cart(registered_customer, item_id)
@@ -159,19 +146,19 @@ def checkout_view(request):
         return redirect('login')
     user = request.user
     registered_customer = user.registered_customer
-    cart = registered_customer.cart
+    cart = registered_customer.cart.all()
+    order = checkout(cart)
 
     # customer = Customer.objects.create(user=user)
     # customer.order = order
     # customer.save()
 
-    order_items = OrderItem.objects.filter(order=cart)
-
     context = {
-        'order_items': order_items
+        'order_items': order.items.all(),
+        'current_user': user,
+        # 'customer': customer
     }
     return render(request, 'users/checkout.html', context)
-
 
 @login_required
 def payment_view(request):
