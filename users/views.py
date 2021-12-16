@@ -1,6 +1,7 @@
 import datetime
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
 from items.models import Item
 from orders.models import Order, OrderItem
@@ -41,13 +42,35 @@ def register_view(request):
     }
     return render(request, 'users/register.html', context)
 
+#def change status
 
 def register_as_business_view(request):
     if request.method == 'POST':
         formset = BusinessFrom(request.POST, request.FILES)
         if formset.is_valid():
-            pass
+            legal_name = formset.cleaned_data['legal_name']
+            store_name = formset.cleaned_data['store_name']
+            email = formset.cleaned_data['email']
+            password = formset.cleaned_data['password']
+            store_name = formset.cleaned_data['store_name']
+            avatar = formset.cleaned_data['avatar']
+            review, _ = User.objects.create_user()
+
+            #.objects.get_or_create_us(
+            #    user=registered_customer, item=item)
+        #    pass
+            # grade = form.cleaned_data['grade']
+            # text = form.cleaned_data['text']
+            # item = get_object_or_404(Item, pk=item_id)
+            # review, _ = Review.objects.get_or_create(
+            #     user=registered_customer, item=item)
+            # review.grade = grade
+            # review.text = text
+            # review.save()
+            #регистрация юзера
+            #Создать бизнес на основе юзера
             # save pls form in database
+            # save()
     else:
         formset = BusinessFrom()
 

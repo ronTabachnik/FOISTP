@@ -18,14 +18,14 @@ class UserRegisterForm(forms.Form):
 
 
 class BusinessFrom(forms.Form):
-    first_name = forms.CharField(
+    legal_name = forms.CharField(
         max_length=100,
         widget=forms.TextInput(
             attrs={'class': 'form-control'}
         )
     )
-    last_name = forms.CharField(
-        max_length=100,
+    store_name = forms.CharField(
+        max_length=200,
         widget=forms.TextInput(
             attrs={'class': 'form-control'}
         )
