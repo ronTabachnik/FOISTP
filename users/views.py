@@ -1,5 +1,7 @@
 import datetime
 
+
+from django.core.mail import send_mail
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -8,7 +10,7 @@ from countries.models import Country
 from items.models import Item
 from orders.models import Order, OrderItem
 from users.models import Business, Customer, CustomerAddress, RegisteredCustomer
-from users.utils import add_to_cart, add_to_wishlist, remove_from_cart, remove_from_wishlist, change_status
+from users.utils import add_to_cart, add_to_wishlist, remove_from_cart, remove_from_wishlist, change_status, remove_business
 from users.forms import BusinessFrom, UserRegisterForm, CustomerForm
 
 
@@ -36,7 +38,7 @@ def register_view(request):
     return render(request, 'users/register.html', context)
 
 def change_profile_status_view(request, user_id):
-    if not hasattr(request.user, 'admin_customer'):
+    if not hasattr(request.user, 'registered_customer'):#admin
         return redirect('login')
     status = True #True for ban
     reg_user = RegisteredCustomer.objects.get(id=user_id)
@@ -66,8 +68,22 @@ def register_as_business_view(request):
     context = {
         'formset': formset
     }
+    #using smtplib for emails
+    send_mail(
+        'Approval letter',
+        'message, that you have registered as business',
+        'company@example.com',
+        [email],
+        fail_silently=False,
+        )
     return render(request, 'users/register-business.html', context)
 
+def request_store_closure_view(request):
+    if not hasattr(request.user, 'registered_customer'):#business
+        return redirect('login')
+    business_user = request.user.business
+    remove_business(business_user)
+    return redirect('login')
 
 
 
