@@ -18,6 +18,7 @@ class Order(models.Model):
     status = models.CharField(
         max_length=2, choices=Status.choices, default=Status.Error)
     created = models.DateTimeField(auto_now_add=True)
+    total_price = models.FloatField(default=0.0)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
 
