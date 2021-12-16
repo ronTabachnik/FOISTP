@@ -36,7 +36,7 @@ class CustomerAddress(models.Model):
         verbose_name_plural = 'Customer addresses'
 
     def __str__(self):
-        return f'{self.zip}'
+        return f'{self.zip} {self.country}, {self.street}, {self.building}'
 
 
 class RegisteredCustomer(models.Model):
@@ -63,7 +63,7 @@ class Customer(models.Model):
     surname = models.CharField(max_length=200, blank=False, null=True)
     contact_phone = models.CharField(max_length=15, blank=True, null=True)
     order = models.OneToOneField(Order, on_delete=models.CASCADE, null=True)
-    address = models.OneToOneField(CustomerAddress, on_delete=models.CASCADE)
+    address = models.ForeignKey(CustomerAddress, on_delete=models.CASCADE)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
 
