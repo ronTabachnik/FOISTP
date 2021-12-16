@@ -44,7 +44,7 @@ def register_as_business_view(request):
             password = formset.cleaned_data['password']
             store_name = formset.cleaned_data['store_name']
             avatar = formset.cleaned_data['avatar']
-            review, _ = User.objects.create_user()
+            user, _ = User.objects.create_user(username=legal_name, password=password,)
 
             #.objects.get_or_create_us(
             #    user=registered_customer, item=item)
