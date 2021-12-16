@@ -1,34 +1,31 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load user_extras %}
+
 {% block title %}
     Checkout | Our site
 {% endblock title %}
 {% block content %}
-    <section class="container">
-        <h1 class="section-title">Checkout</h1>
-    </section>
-    <div class="container flex-column">
-        {% if order %}
-        <div class="items">
-        <ul class="items-list">
-            {% for item in order %}
-            <li class="items-list-item">
-            <div class="item">
-                <a class="item-remove-btn" href="{% url 'remove_from_cart' item.id %}">X</a>
-                <a href="/items/{{item.id}}">
-                <img class="item-image" src="{{ item.picture.url }}" alt="shoes">
-                <div class="item-description">
-                    <span class="title">{{ item.title }}</span>
-                    <span class="rating">Rating: {{ item.rating }}</span>
-                    <span class="price">${{ item.price }}</span>
-                </div>
-                </a>
-            </div>
-            </li>
-            {% endfor %}
-        </ul>
-        </div>
-        <a class="btn btn-success" href="#">Pay</a>
-        {% endif %}
+  <section class="container">
+    <div class="row">
+      <div class="section-title my-3">
+        <h1>Checkout</h1>
+      </div>
     </div>
+    {% if order_items %}
+    <div class="row">
+      <div class="col-4">
+        <ul class="list-group">
+          {% for order_item in order_items %}
+            <li class="list-group-item">{{order_item.item.title}}: x{{order_item.quantity}} <span style="float: right;">${{order_item.quantity | multiply:order_item.item.price}}</span></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+      <div class="d-flex justify-content-center">
+        <a class="btn btn-success" href="#">Pay</a>
+      </div>
+    </div>
+    {% endif %}
+  </section>
 {% endblock content %}

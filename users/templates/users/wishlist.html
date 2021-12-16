@@ -4,7 +4,40 @@
   Wishlist | Shoe store
 {% endblock title %}
 {% block content %}
+
   <section class="container">
+    <div class="row">
+      <div class="section-title my-3">
+        <h1>Wishlist</h1>
+      </div>
+    </div>
+    <div class="row">
+      {% if wishlist|length %}
+        <div class="d-flex justify-content-evenly">
+          {% for item in wishlist %}
+            <div class="card">
+              <img class="card-img" src="{{ item.picture.url }}" alt="shoes">
+              <div class="card-body bg-dark">
+                <h5 class="card-title">{{ item.title }}</h5>
+                <p class="card-text"> 
+                  <span>Rating: {{ item.rating }}</span>
+                  <span style="float: right;">${{ item.price }}</span>
+                </p>
+              </div>
+              <div class="card-footer w-100">
+                <div class="d-grid">
+                  <a class="btn btn-outline-danger" href="{% url 'remove_from_wishlist' item.id %}">Remove</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <h3>Your wishlist is empty!</h3>
+      {% endif %}
+    </div>
+  </section>
+  {% comment %} <section class="container">
     <div class="row">
       <div class="section-title my-3">
         <h1>Wishlist</h1>
@@ -35,5 +68,5 @@
       <h3>Your wishlist is empty!</h3>
       {% endif %}
     </div>
-  </section>
+  </section> {% endcomment %}
 {% endblock content %}
