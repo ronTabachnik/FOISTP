@@ -37,6 +37,8 @@ def register_view(request):
     context = {}
     return render(request, 'users/register.html', context)
 
+
+@login_required
 def change_profile_status_view(request, user_id):
     if not hasattr(request.user, 'registered_customer'):#admin
         return redirect('login')
