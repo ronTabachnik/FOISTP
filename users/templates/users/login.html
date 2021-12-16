@@ -13,28 +13,19 @@
     </div>
     <div class="row">
       <div class="offset-4 col-4">
-        <form method="post">
+        <form action="" method=POST>
           {% csrf_token %}
-          <p>
-            <label for="email">Email:</label>
-            <input 
-              type="email" 
-              class="form-control" 
-              name="email" 
-              id="email" 
-              aria-describedby="emailHelp"
-            >
-          </p>
-          <p>
-            <label for="password">Password:</label>
-            <input 
-              type="password" 
-              class="form-control" 
-              name="password" 
-              id="password"
-            >
-          </p>
-          <button class="btn btn-outline-success w-100 mb-5" type="submit">Login</button>
+          <form>
+            <div class="mb-3">
+              <label style="color:white;" for="exampleInputEmail1" class="form-label">Email</label>
+              <input type="text" class="form-control" placeholder="Email" name="username" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+              <label style="color:white;" for="exampleInputPassword1" class="form-label">Password</label>
+              <input type="password" placeholder="Password" class="form-control" name="password">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
         </form>
       </div>
     </div>
