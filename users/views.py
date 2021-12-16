@@ -14,7 +14,7 @@ from countries.models import Country
 from items.models import Item
 from orders.models import Order, OrderItem
 from users.models import Business, Customer, CustomerAddress, RegisteredCustomer
-from users.utils import add_to_cart, add_to_wishlist, remove_from_cart, remove_from_wishlist, change_status, remove_business
+from users.utils import add_to_cart, add_to_wishlist, remove_from_cart, remove_from_wishlist, change_status, remove_business, change_application_to_approval, reject_application
 from users.forms import BusinessFrom, UserRegisterForm, CustomerForm
 
 
@@ -31,7 +31,44 @@ def profile_view(request):
     }
     return render(request, 'users/profile.html', context)
 
+@login_required
+def registered_users_view(request):
+    if not hasattr(request.user, 'registered_customer'):#admin
+        return redirect('login')
+    users = RegisteredCustomer.objects.all()[:20]
+    context = {
+        'businesses': users
+    }
+    return render(request, 'ADMINorders/orders.html', context)#admin_DashBoard
 
+@login_required
+def businesses_view(request):
+    if not hasattr(request.user, 'registered_customer'):#admin
+        return redirect('login')
+    businesses = Business.objects.all()[:20]
+    context = {
+        'businesses': businesses
+    }
+    return render(request, 'ADMINorders/orders.html', context)#admin_DashBoard
+
+
+@login_required
+def change_application_approval_view(request, user_id):
+    if not hasattr(request.user, 'registered_customer'):#admin
+        return redirect('login')
+    user_to_business = Business.objects.get(id=user_id)
+    change_application_to_approval(user_to_business)
+    return redirect('admin_dashboard')
+
+@login_required
+def reject_application_view(request, user_id):
+    if not hasattr(request.user, 'registered_customer'):#admin
+        return redirect('login')
+    user_to_business = Business.objects.get(id=user_id)
+    reject_application(user_to_business)
+    return redirect('admin_dashboard')
+
+@login_required
 def change_profile_status_view(request, user_id):
     if not hasattr(request.user, 'registered_customer'):#admin
         return redirect('login')
@@ -72,9 +109,9 @@ def register_as_business_view(request):
         fail_silently=False,
         )
     return render(request, 'users/register-business.html', context)
-
+#                            ¯\_(ツ)_/¯
 def request_store_closure_view(request):
-    if not hasattr(request.user, 'registered_customer'):#business
+    if not hasattr(request.user, 'business'):
         return redirect('login')
     business_user = request.user.business
     remove_business(business_user)
