@@ -10,7 +10,6 @@ def home_view(request):
         'items': items,
         'categories': categories,
         'current_user': request.user,
-
     }
     return render(request, 'items/home.html', context)
 

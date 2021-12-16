@@ -2,6 +2,21 @@ from typing import Container
 from django import forms
 
 
+class UserRegisterForm(forms.Form):
+    email = forms.EmailField(
+        max_length=255,
+        widget=forms.EmailInput(
+            attrs={'class': 'form-control'}
+        )
+    )
+    password = forms.CharField(
+        max_length=255,
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control'}
+        )
+    )
+
+
 class BusinessFrom(forms.Form):
     first_name = forms.CharField(
         max_length=100,

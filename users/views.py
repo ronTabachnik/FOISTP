@@ -3,9 +3,9 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from items.models import Item
-from orders.models import Order
+from orders.models import Order, OrderItem
 from users.utils import add_to_cart, add_to_wishlist, checkout, remove_from_cart, remove_from_wishlist
-from users.forms import BusinessFrom
+from users.forms import BusinessFrom, UserRegisterForm
 
 
 @login_required
@@ -28,7 +28,17 @@ def login_view(request):
 
 
 def register_view(request):
-    context = {}
+    if request.method == 'POST':
+        formset = UserRegisterForm(request.POST)
+        if formset.is_valid():
+            pass
+            # save pls form in database
+    else:
+        formset = UserRegisterForm()
+
+    context = {
+        'formset': formset
+    }
     return render(request, 'users/register.html', context)
 
 
@@ -102,6 +112,8 @@ def cart_view(request):
 
 @login_required
 def add_to_cart_view(request, item_id):
+    if not hasattr(request.user, 'registered_customer'):
+        return redirect('login')
     user = request.user
     registered_customer = user.registered_customer
     add_to_cart(registered_customer, item_id)
@@ -124,16 +136,20 @@ def checkout_view(request):
         return redirect('login')
     user = request.user
     registered_customer = user.registered_customer
-    cart = registered_customer.cart.all()
-    order = checkout(cart)
+    cart = registered_customer.cart
 
     # customer = Customer.objects.create(user=user)
     # customer.order = order
     # customer.save()
 
+    order_items = OrderItem.objects.filter(order=cart)
+
     context = {
-        'order_items': order.items.all(),
-        'current_user': user,
-        # 'customer': customer
+        'order_items': order_items
     }
     return render(request, 'users/checkout.html', context)
+
+
+@login_required
+def payment_view(request):
+    pass

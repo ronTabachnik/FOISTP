@@ -34,11 +34,11 @@ def add_to_cart(registered_customer, item_id):
 
 def remove_from_cart(registered_customer, item_id):
     try:
-        item = Item.objects.get(pk=item_id)
+        item = OrderItem.objects.get(pk=item_id)
     except Item.DoesNotExist:
         logging.error(
-            f'Failed to remove item from the user {registered_customer.username} cart. (Item with id:{item_id} does not exists.)')
-    registered_customer.cart.remove(item)
+            f'Failed to remove item from the user {registered_customer.user.username} cart. (Item with id:{item_id} does not exists.)')
+    item.delete()
 
 
 def checkout(cart):
