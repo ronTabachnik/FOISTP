@@ -42,7 +42,8 @@ def register_view(request):
     }
     return render(request, 'users/register.html', context)
 
-#def change status
+# def change status
+
 
 def register_as_business_view(request):
     if request.method == 'POST':
@@ -56,7 +57,7 @@ def register_as_business_view(request):
             avatar = formset.cleaned_data['avatar']
             review, _ = User.objects.create_user()
 
-            #.objects.get_or_create_us(
+            # .objects.get_or_create_us(
             #    user=registered_customer, item=item)
         #    pass
             # grade = form.cleaned_data['grade']
@@ -67,8 +68,8 @@ def register_as_business_view(request):
             # review.grade = grade
             # review.text = text
             # review.save()
-            #регистрация юзера
-            #Создать бизнес на основе юзера
+            # регистрация юзера
+            # Создать бизнес на основе юзера
             # save pls form in database
             # save()
     else:
@@ -168,7 +169,8 @@ def checkout_view(request):
     order_items = OrderItem.objects.filter(order=cart)
 
     context = {
-        'order_items': order_items
+        'order_items': order_items,
+        'total_price': cart.total_price
     }
     return render(request, 'users/checkout.html', context)
 

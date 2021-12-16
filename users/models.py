@@ -57,12 +57,6 @@ class RegisteredCustomer(models.Model):
 
 
 class Customer(models.Model):
-    #banned or normal status
-    class Status(models.TextChoices):
-        Normal = '0', 'Normal'
-        Banned = '1', 'Banned'
-    status = models.CharField(
-        max_length=2, choices=Status.choices, default=Status.Normal)
     user = models.ForeignKey(
         User, on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(max_length=200, blank=False, null=True)
@@ -82,7 +76,7 @@ class Administrator(models.Model):
 
 
 class Business(models.Model):
-    #default standart status myk
+    # default standart status myk
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     contact_phone = models.CharField(max_length=20, blank=True, null=True)
     store_name = models.CharField(max_length=200, blank=False, null=True)
