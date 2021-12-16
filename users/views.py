@@ -1,10 +1,14 @@
 import datetime
 
-
 from django.core.mail import send_mail
+from django.contrib.auth import authenticate, login,logout
+from django.contrib.auth.forms import UserCreationForm
+
 from django.db import IntegrityError
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from countries.models import Country
 from items.models import Item
@@ -27,15 +31,6 @@ def profile_view(request):
     }
     return render(request, 'users/profile.html', context)
 
-
-def login_view(request):
-    context = {}
-    return render(request, 'users/login.html', context)
-
-
-def register_view(request):
-    context = {}
-    return render(request, 'users/register.html', context)
 
 def change_profile_status_view(request, user_id):
     if not hasattr(request.user, 'registered_customer'):#admin
@@ -212,6 +207,36 @@ def checkout_view(request):
         'formset': formset
     }
     return render(request, 'users/checkout.html', context)
+
+def register_view(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username,password=password)
+            login(request,user)
+            messages.success(request,('reg Success!'))
+            return redirect('')
+    else:
+        form = UserRegisterForm()
+    return render(request, 'users/register.html',{})
+
+def login_view(request):
+    if request.method == "POST":
+         username = request.POST['username']
+         password = request.POST['password']
+         user = authenticate(request, username=username, password=password)
+         if user is not None:
+            login(request, user)
+            return redirect('home')
+         else:
+             messages.success(request,("There was an error logging in! Please try again!"))
+             return redirect('login')
+    else:
+        return render(request, 'users/login.html',{})
+
 
 @login_required
 def payment_view(request):
