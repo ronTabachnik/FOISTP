@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
-
+from orders.models import Order
+from items.models import Item
 from requests_.models import ReturnRequest
 
 
@@ -56,5 +57,8 @@ def return_request_reject_view(request, request_id):
     return redirect('store dashboard')
 
 
-def crete_return_request_view(request, order_id):
-    pass
+def crete_return_request_view(request, order_id, item_id, amount):
+    order = get_object_or_404(Order, pk=order_id)
+    item = get_object_or_404(Item, pk=item_id)
+    return_request = ReturnRequest.objects.create(
+        business=item.vendor, customer=order.customer, status=ReturnRequest.Status.Pending, order=order, item=item, count=amount)
