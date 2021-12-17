@@ -33,7 +33,9 @@ def item_detail_view(request, item_id):
     }
     try:
         item = Item.objects.get(pk=item_id)
+        reviews = item.review_set.all()
         context['item'] = item
+        context['reviews'] = reviews
     except Item.DoesNotExist:
         context['error_message'] = 'Failed to fetch an item.'
     return render(request, 'items/item.html', context)

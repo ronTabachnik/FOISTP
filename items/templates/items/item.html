@@ -40,6 +40,19 @@
           </div>
         </div>
       </div>
+      {% if reviews|length != 0 %}
+        <div class="row">
+          <ul class="list-group">
+            {% for review in reviews %}
+              <li class="list-group-item">
+                Grade: {{review.grade}}
+                <br/>
+                {{review.text}}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
     {% endif %}
   </section>
 {% endblock content %}
