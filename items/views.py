@@ -1,4 +1,4 @@
-from email import message
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from items.models import Category, Item, Review
 from .forms import ReviewForm
@@ -57,7 +57,7 @@ def review_view(request, item_id):
             review.grade = grade
             review.text = text
             review.save()
-            message.success(request, 'Posted review')
+            messages.success(request, 'Posted review')
         return redirect('item', item_id)
     else:
         form = ReviewForm()
