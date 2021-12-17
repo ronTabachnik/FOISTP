@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.http import request
 from django.views import generic
 
 
@@ -19,6 +20,7 @@ from countries.models import Country
 from items.models import Item
 from django.urls import reverse_lazy
 from orders.models import Order, OrderItem
+from users.forms import RegisterUserForm,UpdateUserForm
 from users.models import Business, Customer, CustomerAddress, RegisteredCustomer
 
 from users.utils import add_to_cart, add_to_wishlist, remove_from_cart, remove_from_wishlist, change_status, remove_business
@@ -314,27 +316,43 @@ def logout_view(request):
     logout(request)
     messages.success(request,("You Were Logged-Out"))
     return redirect('home')
+
+def register_view(request):
+    if request.method == "POST":
+        form = RegisterUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username,password=password)
+            if user is not None:
+                registered = RegisteredCustomer.objects.create(user=user)
+                registered.save()
+                login(request,user)
+                messages.success(request,('Registration Successful!'))
+                return redirect('home')
+    else:
+        form = RegisterUserForm()
+    return render(request, 'users/register.html',{
+        'form':form,
+    })
     
-# @login_required
-# def profile_view(request):
-#     if not hasattr(request.user, 'registered_customer'):
-#         return redirect('login')
-#     user_form = CustomerForm
-#     user = request.user
-#     def post(self,request):
-#         data = request.POST or None
-#         user_form = CustomerForm(data,instance=user)
-#         if user_form.is_valid():
-#             user_form.save()
-#             messages.success(request,'Your profile was successfully updated')
-#             return redirect('profile')
-        
-class user_edit_view(generic.UpdateView):
-    form_class = UserChangeForm
-    template_name = 'users/edit_profile.html'
-    success_url = reverse_lazy('home')
-    def get_object(self):
-        return self.request.user
+@login_required
+def user_edit_view(request,username):
+    if not hasattr(request.user,'registered_customer'):
+        return redirect('login')
+    if request.method == "POST":
+        form = UpdateUserForm(request.POST,instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request,('Information was updated!'))
+            return redirect('home')
+    else:
+        form = UpdateUserForm()
+    return render(request,'users/edit_profile.html',{
+        'form':form,
+        'current_user':request.user,
+    })   
     
 @login_required
 def profile_view(request):
