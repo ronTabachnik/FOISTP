@@ -307,3 +307,17 @@ def login_view(request):
 @login_required
 def payment_view(request):
     pass
+
+
+@login_required
+def store_dashboard_view(request):
+    if not hasattr(request.user, 'business'):
+        return redirect('login')
+    user = request.user
+    business = user.business
+    return_requests = business.return_requests.all()
+    context = {
+        'return_requests': return_requests,
+        'current_user': user
+    }
+    return render(request, 'users/store_dashboard.html', context)

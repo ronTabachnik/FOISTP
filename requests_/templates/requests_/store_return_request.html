@@ -1,5 +1,3 @@
-{% comment %} To implement {% endcomment %}
-
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
@@ -7,5 +5,18 @@
 {% endblock title %}
 {% block content %}
   <div class="container">
+    <p>
+      An item: {{ return_request.item }}
+    </p>
+    <p>
+      Count: {{ return_request.item }}
+    </p>
+    <p>
+      Current status: {{ return_request.get_status_display }}
+    </p>
+    <div class="btn-group">
+      <a href="{% url 'store return request accept' return_request.id %}" class="btn btn-success">Accept</a>
+      <a href="{% url 'store return request reject' return_request.id %}" class="btn btn-danger">Reject</a>
+    </div>
   </div>
 {% endblock content %}
