@@ -43,15 +43,21 @@
       </div>
       {% if reviews|length != 0 %}
         <div class="row">
-          <ul class="list-group">
-            {% for review in reviews %}
-              <li class="list-group-item">
-                Grade: {{review.grade}}
-                <br/>
-                {{review.text}}
+          <div class="col">
+            <ul class="list-group">
+              <li class="list-group-item fw-bold">
+                Reviews:
               </li>
-            {% endfor %}
-          </ul>
+              {% for review in reviews %}
+                <li class="list-group-item">
+                  Customer: {{ review.user }}
+                  (Grade: {{ review.grade }})
+                  <br>
+                  {{review.text}}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
         </div>
       {% endif %}
     {% endif %}

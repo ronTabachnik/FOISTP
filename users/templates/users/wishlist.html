@@ -16,9 +16,13 @@
         <div class="d-flex justify-content-evenly">
           {% for item in wishlist %}
             <div class="card">
-              <img class="card-img" src="{{ item.picture.url }}" alt="shoes">
+              <a href="{% url 'item' item.id %}">
+                <img class="card-img" src="{{ item.picture.url }}" alt="shoes">
+              </a>
               <div class="card-body bg-dark">
-                <h5 class="card-title">{{ item.title }}</h5>
+                <a href="{% url 'item' item.id %}">
+                  <h5 class="card-title">{{ item.title }}</h5>
+                </a>
                 <p class="card-text"> 
                   <span>Rating: {{ item.rating }}</span>
                   <span style="float: right;">${{ item.price }}</span>

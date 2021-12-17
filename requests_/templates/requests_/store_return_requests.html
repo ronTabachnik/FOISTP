@@ -4,13 +4,25 @@
   Store return requests | Our site
 {% endblock title %}
 {% block content %}
-  <div class="container">
+  <section class="container">
+    <div class="row">
+      <div class="section-title my-3">
+        <h1>Store return requests</h1>
+      </div>
+    </div>
     {% if return_requests|length != 0 %}
       <div class="row">
-        <div class="col-10">
+        <div class="col">
           <ul class="list-group">
             {% for request in return_requests %}
-            <li class="list-group-item"><a href="{% url 'store return request' request.id %}" style="text-decoration:underline">Return request {{ request.id }}</a><br/>Current status {{ request.get_status_display }} </li>
+            <li class="list-group-item">
+              <a href="{% url 'store return request' request.id %}" style="text-decoration:underline">
+                Return request {{ request.id }}
+              </a>
+              <span class="float-end">
+                Current status: {{ request.get_status_display }}
+              </span>
+            </li>
             {% endfor %}
           </ul>
         </div>
@@ -18,5 +30,5 @@
     {% else %}
       <h4>No return requests found</h4>
     {% endif %}
-  </div>
+  </section>
 {% endblock content %}

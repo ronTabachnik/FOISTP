@@ -14,7 +14,7 @@ from countries.models import Country
 from items.models import Item
 from orders.models import Order, OrderItem
 from users.models import Business, Customer, CustomerAddress, RegisteredCustomer
-from users.utils import add_to_cart, add_to_wishlist, remove_from_cart, remove_from_wishlist, change_status, remove_business, change_application_to_approval, reject_application
+from users.utils import add_to_cart, add_to_wishlist, decrease_item_amount, increase_item_amount, remove_from_cart, remove_from_wishlist, change_status, remove_business, change_application_to_approval, reject_application
 from users.forms import BusinessFrom, UserRegisterForm, CustomerForm
 
 
@@ -191,6 +191,7 @@ def add_to_cart_view(request, item_id):
     user = request.user
     registered_customer = user.registered_customer
     add_to_cart(registered_customer, item_id)
+    messages.success(request, 'Item added to cart')
     return redirect('cart')
 
 
@@ -200,6 +201,7 @@ def decrease_item_amount_view(request, item_id):
         return redirect('login')
     user = request.user
     registered_customer = user.registered_customer
+    decrease_item_amount(registered_customer, item_id)
     return redirect('cart')
 
 
@@ -209,6 +211,7 @@ def increase_item_amount_view(request, item_id):
         return redirect('login')
     user = request.user
     registered_customer = user.registered_customer
+    increase_item_amount(registered_customer, item_id)
     return redirect('cart')
 
 
@@ -219,6 +222,7 @@ def remove_from_cart_view(request, item_id):
     user = request.user
     registered_customer = user.registered_customer
     remove_from_cart(registered_customer, item_id)
+    messages.success(request, 'Item removed from cart')
     return redirect('cart')
 
 
