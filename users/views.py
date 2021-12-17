@@ -98,21 +98,20 @@ def register_as_business_view(request):
             business = Business.objects.create(user=user, contact_phone=contact_phone,
                                                store_name=store_name, avatar=avatar)
             business.save()
-
-        else:
-            formset = BusinessFrom()
+            send_mail(
+                'Approval letter',
+                'message, that you have registered as business',
+                'company@example.com',
+                [email],
+                fail_silently=False,
+            )
+    else:
+        formset = BusinessFrom()
 
     context = {
         'formset': formset
     }
     # using smtplib for emails
-    send_mail(
-        'Approval letter',
-        'message, that you have registered as business',
-        'company@example.com',
-        [email],
-        fail_silently=False,
-    )
     return render(request, 'users/register-business.html', context)
 #                            ¯\_(ツ)_/¯
 
