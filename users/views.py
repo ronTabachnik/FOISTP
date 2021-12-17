@@ -149,6 +149,7 @@ def add_to_wishlist_view(request, item_id):
     registered_customer = user.registered_customer
     item = get_object_or_404(Item, pk=item_id)
     add_to_wishlist(registered_customer, item)
+    messages.success(request, 'Item added to wishlist')
     return redirect('wishlist')
 
 
@@ -159,6 +160,7 @@ def remove_from_wishlist_view(request, item_id):
     user = request.user
     registered_customer = user.registered_customer
     remove_from_wishlist(registered_customer, item_id)
+    messages.success(request, 'Item deleted from to wishlist')
     return redirect('wishlist')
 
 
