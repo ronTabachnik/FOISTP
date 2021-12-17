@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('<uuid:order_id>/<uuid:item>/<int:amount>/', views.crete_return_request_view,
+    path('<uuid:order_item_id>/', views.crete_return_request_view,
          name='create return request'),
     path('store/', views.list_return_requests_view, name='store return requests'),
     path('store/<uuid:request_id>/', views.return_request_view,

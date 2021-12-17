@@ -21,7 +21,6 @@ def orders_view(request):
 def order_detail_view(request, order_id):
     order = Order.objects.get(id=order_id)
     order_items = OrderItem.objects.filter(order=order)
-    print(order)
     context = {
         'order': order,
         'order_items': order_items,
@@ -54,3 +53,13 @@ def store_order_detail_view(request, order_id):
         'current_user': request.user,
     }
     return render(request, 'orders/store_order.html', context)
+
+
+def return_order_view(request, order_id):
+    order = Order.objects.filter(pk=order_id).first()
+    context = {
+        'order': order,
+        'order_items': order.items.all(),
+        'current_user': request.user,
+    }
+    return render(request, 'orders/return_order.html', context)
