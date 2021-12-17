@@ -336,7 +336,8 @@ def register_view(request):
     return render(request, 'users/register.html',{
         'form':form,
     })
-    
+def password_reset_view(request,username):
+    return redirect('password_reset')
 @login_required
 def user_edit_view(request,username):
     if not hasattr(request.user,'registered_customer'):
