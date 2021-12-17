@@ -2,7 +2,7 @@
 {% comment %} To implement {% endcomment %}
 {% load static %}
 {% block title %}
-  Register | Shoe store platform
+    Edit Profile | Our site
 {% endblock title %}
 {% block content %}
   <div class="container" >
@@ -14,14 +14,17 @@
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
         {% endif %}
-          <h1>Register</h1>
+          <h1>Edit Profile</h1>
       </div>
     </div>
       <div class="container offset-4 col-4" style="background-color:#F05454">
-        <form action="{%url 'register'%}" method=POST>
+        <form action="{%url 'edit_profile' current_user.username%}" method=POST>
           {% csrf_token %}
           {{ form.as_p }}
-          <input type="submit" value="Submit">
+          <input type="submit" value="Update">
+          <br>
+          <br>
+          <button href="password_reset" type="button">reset password</button> 
         </form>
       </div>
   </div>

@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'colors',
     'requests_',
 ]
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.AllowAllUsersModelBackend',
+    )
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -106,6 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 
 
 # Internationalization

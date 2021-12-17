@@ -1,8 +1,14 @@
 import datetime
+import django
 
 from django.core.mail import send_mail
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
+
+from django.contrib.auth import authenticate, login,logout
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.http import request
+from django.views import generic
+
+
 
 from django.db import IntegrityError
 
@@ -12,24 +18,16 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from countries.models import Country
 from items.models import Item
+from django.urls import reverse_lazy
 from orders.models import Order, OrderItem
+from users.forms import RegisterUserForm,UpdateUserForm
 from users.models import Business, Customer, CustomerAddress, RegisteredCustomer
-from users.utils import add_to_cart, add_to_wishlist, decrease_item_amount, increase_item_amount, remove_from_cart, remove_from_wishlist, change_status, remove_business, change_application_to_approval, reject_application
-from users.forms import BusinessFrom, UserRegisterForm, CustomerForm
+
+from users.utils import add_to_cart, add_to_wishlist, remove_from_cart, remove_from_wishlist, change_status, remove_business
+
+from django.conf import settings
 
 
-@login_required
-def profile_view(request):
-    if not hasattr(request.user, 'registered_customer'):
-        return redirect('login')
-    user = request.user
-    registered_customer = user.registered_customer
-    context = {
-        'username': user.username,
-        'avatar': registered_customer.avatar,
-        'current_user': user,
-    }
-    return render(request, 'users/profile.html', context)
 
 
 @login_required
@@ -100,25 +98,25 @@ def register_as_business_view(request):
             business = Business.objects.create(user=user, contact_phone=contact_phone,
                                                store_name=store_name, avatar=avatar)
             business.save()
-
-        else:
-            formset = BusinessFrom()
+            send_mail(
+                'Approval letter',
+                'message, that you have registered as business',
+                'company@example.com',
+                [email],
+                fail_silently=False,
+            )
+    else:
+        formset = BusinessFrom()
 
     context = {
         'formset': formset
     }
     # using smtplib for emails
-    send_mail(
-        'Approval letter',
-        'message, that you have registered as business',
-        'company@example.com',
-        [email],
-        fail_silently=False,
-    )
     return render(request, 'users/register-business.html', context)
 #                            ¯\_(ツ)_/¯
 
 
+@login_required
 def request_store_closure_view(request):
     if not hasattr(request.user, 'business'):
         return redirect('login')
@@ -280,19 +278,23 @@ def checkout_view(request):
 
 def register_view(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = RegisterUserForm(request.POST)
         if form.is_valid():
-            form.save
+            form.save()
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            messages.success(request, ('reg Success!'))
-            return redirect('')
+            user = authenticate(username=username,password=password)
+            if user is not None:
+                registered = RegisteredCustomer.objects.create(user=user)
+                registered.save()
+                login(request,user)
+                messages.success(request,('Registration Successful!'))
+                return redirect('home')
     else:
-        form = UserRegisterForm()
-    return render(request, 'users/register.html', {})
-
+        form = RegisterUserForm()
+    return render(request, 'users/register.html',{
+        'form':form,
+    })
 
 def login_view(request):
     if request.method == "POST":
@@ -309,6 +311,62 @@ def login_view(request):
     else:
         return render(request, 'users/login.html', {})
 
+def logout_view(request):
+    logout(request)
+    messages.success(request,("You Were Logged-Out"))
+    return redirect('home')
+
+def register_view(request):
+    if request.method == "POST":
+        form = RegisterUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username,password=password)
+            if user is not None:
+                registered = RegisteredCustomer.objects.create(user=user)
+                registered.save()
+                login(request,user)
+                messages.success(request,('Registration Successful!'))
+                return redirect('home')
+    else:
+        form = RegisterUserForm()
+    return render(request, 'users/register.html',{
+        'form':form,
+    })
+def password_reset_view(request,username):
+    return redirect('password_reset')
+@login_required
+def user_edit_view(request,username):
+    if not hasattr(request.user,'registered_customer'):
+        return redirect('login')
+    if request.method == "POST":
+        form = UpdateUserForm(request.POST,instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request,('Information was updated!'))
+            return redirect('home')
+    else:
+        form = UpdateUserForm()
+    return render(request,'users/edit_profile.html',{
+        'form':form,
+        'current_user':request.user,
+    })   
+    
+@login_required
+def profile_view(request):
+    if not hasattr(request.user, 'registered_customer'):
+        return redirect('login')
+    user = request.user
+    registered_customer = user.registered_customer
+    context = {
+        'username': user.username,
+        'email': user.email,
+        'avatar': registered_customer.avatar,
+        'current_user': user,
+    }
+    return render(request, 'users/profile.html', context)
 
 @login_required
 def payment_view(request):
