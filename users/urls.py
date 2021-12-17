@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 # Ron, use this module ↓ to implement login+register+logout
 from django.contrib.auth import views as auth_views
 
@@ -7,6 +9,8 @@ urlpatterns = [
     path('', views.profile_view, name='profile'),
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
+    path('edit_profile/', views.user_edit_view.as_view(), name='edit_profile'),
+    path('logout/', views.logout_view, name='logout'),
     path('register-business/', views.register_as_business_view,
          name='register_business'),
     #NEEDS TO CREATE path('admin_dashboard/', views.admin_dashboard_view, name='admin_dashboard'),
@@ -15,7 +19,7 @@ urlpatterns = [
     #reject business
     path('store_closure/', views.request_store_closure_view, name='store_closure'),
 
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    
     path('wishlist/', views.wishlist_view, name='wishlist'),
     path('add_to_wishlist/<uuid:item_id>/',
          views.add_to_wishlist_view, name='add_to_wishlist'),
@@ -28,4 +32,6 @@ urlpatterns = [
          views.remove_from_cart_view, name='remove_from_cart'),
     path('checkout/', views.checkout_view, name='checkout'),
     path('payment/', views.payment_view, name='payment')
+    
 ]
+

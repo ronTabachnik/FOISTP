@@ -5,6 +5,8 @@ import uuid
 from countries.models import Country
 from items.models import Item
 from orders.models import Order
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 # ! Customer address should have many to one relation with customer
@@ -21,6 +23,7 @@ class Administrator(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
+    
 class CustomerAddress(models.Model):
     street = models.CharField(max_length=200, blank=False, null=True)
     building = models.CharField(max_length=200, blank=False, null=True)
@@ -69,11 +72,10 @@ class Customer(models.Model):
 
     def __str__(self):
         return f'{self.name} {self.surname}'
-
-
+    
+    
 class Administrator(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-
 
 class Business(models.Model):
     # default standart status myk

@@ -1,35 +1,27 @@
 import datetime
+import django
 
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate, login,logout
-from django.contrib.auth.forms import UserCreationForm
-
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.views import generic
 from django.db import IntegrityError
-
+# from django.contrib.sessions import
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from countries.models import Country
 from items.models import Item
+from django.urls import reverse_lazy
 from orders.models import Order, OrderItem
 from users.models import Business, Customer, CustomerAddress, RegisteredCustomer
 from users.utils import add_to_cart, add_to_wishlist, remove_from_cart, remove_from_wishlist, change_status, remove_business
-from users.forms import BusinessFrom, UserRegisterForm, CustomerForm
+from users.forms import BusinessFrom, RegisterUserForm, UserRegisterForm, CustomerForm
+from django.conf import settings
 
 
-@login_required
-def profile_view(request):
-    if not hasattr(request.user, 'registered_customer'):
-        return redirect('login')
-    user = request.user
-    registered_customer = user.registered_customer
-    context = {
-        'username': user.username,
-        'avatar': registered_customer.avatar,
-        'current_user': user,
-    }
-    return render(request, 'users/profile.html', context)
+
 
 
 def change_profile_status_view(request, user_id):
@@ -73,6 +65,7 @@ def register_as_business_view(request):
         )
     return render(request, 'users/register-business.html', context)
 
+@login_required
 def request_store_closure_view(request):
     if not hasattr(request.user, 'registered_customer'):#business
         return redirect('login')
@@ -208,20 +201,26 @@ def checkout_view(request):
     }
     return render(request, 'users/checkout.html', context)
 
+
 def register_view(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = RegisterUserForm(request.POST)
         if form.is_valid():
-            form.save
+            form.save()
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
             user = authenticate(username=username,password=password)
-            login(request,user)
-            messages.success(request,('reg Success!'))
-            return redirect('')
+            if user is not None:
+                registered = RegisteredCustomer.objects.create(user=user)
+                registered.save()
+                login(request,user)
+                messages.success(request,('Registration Successful!'))
+                return redirect('home')
     else:
-        form = UserRegisterForm()
-    return render(request, 'users/register.html',{})
+        form = RegisterUserForm()
+    return render(request, 'users/register.html',{
+        'form':form,
+    })
 
 def login_view(request):
     if request.method == "POST":
@@ -237,6 +236,45 @@ def login_view(request):
     else:
         return render(request, 'users/login.html',{})
 
+def logout_view(request):
+    logout(request)
+    messages.success(request,("You Were Logged-Out"))
+    return redirect('home')
+    
+# @login_required
+# def profile_view(request):
+#     if not hasattr(request.user, 'registered_customer'):
+#         return redirect('login')
+#     user_form = CustomerForm
+#     user = request.user
+#     def post(self,request):
+#         data = request.POST or None
+#         user_form = CustomerForm(data,instance=user)
+#         if user_form.is_valid():
+#             user_form.save()
+#             messages.success(request,'Your profile was successfully updated')
+#             return redirect('profile')
+        
+class user_edit_view(generic.UpdateView):
+    form_class = UserChangeForm
+    template_name = 'users/edit_profile.html'
+    success_url = reverse_lazy('home')
+    def get_object(self):
+        return self.request.user
+    
+@login_required
+def profile_view(request):
+    if not hasattr(request.user, 'registered_customer'):
+        return redirect('login')
+    user = request.user
+    registered_customer = user.registered_customer
+    context = {
+        'username': user.username,
+        'email': user.email,
+        'avatar': registered_customer.avatar,
+        'current_user': user,
+    }
+    return render(request, 'users/profile.html', context)
 
 @login_required
 def payment_view(request):
