@@ -70,9 +70,6 @@ def add_to_cart(registered_customer, item_id):
     order_item, _ = OrderItem.objects.get_or_create(item=item, order=cart)
     order_item.quantity += 1
 
-    item_price = item.price
-    cart.total_price += item_price
-
     cart.save()
     order_item.save()
 
@@ -85,7 +82,6 @@ def increase_item_amount(registered_customer, item_id):
         logging.error(
             f'Failed to increase item quantity in the user {registered_customer.user.username} cart. (Item with id:{item_id} does not exists.)')
     item.quantity += 1
-    cart.total_price -= item.item.price
 
     cart.save()
     item.save()
