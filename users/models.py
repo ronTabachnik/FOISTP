@@ -17,10 +17,6 @@ def get_business_avatar_path(instance, filename):
     return os.path.join('users', str(instance.user), 'businesses', str(instance.store_name), 'emblems', filename)
 
 
-class Administrator(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-
 class CustomerAddress(models.Model):
     street = models.CharField(max_length=200, blank=False, null=True)
     building = models.CharField(max_length=200, blank=False, null=True)
@@ -76,7 +72,7 @@ class Administrator(models.Model):
 
 
 class Business(models.Model):
-    # default standart status myk
+    # default standard status myk
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     approved = models.BooleanField(blank=True, null=True)
     contact_phone = models.CharField(max_length=20, blank=True, null=True)

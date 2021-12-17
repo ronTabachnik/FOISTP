@@ -3,7 +3,6 @@ from django import forms
 from django.forms import ModelForm
 
 
-
 class UserRegisterForm(forms.Form):
     email = forms.EmailField(
         max_length=255,
