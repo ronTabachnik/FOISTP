@@ -11,6 +11,7 @@ from users.models import Business
 def add_to_wishlist(registered_customer, item):
     registered_customer.wishlist.add(item)
 
+
 def remove_business(business):
     try:
         business.delete()
@@ -18,33 +19,34 @@ def remove_business(business):
         logging.error(
             f'Failed to remove business {business.username} ')
 
+
 def change_application_to_approval(user):
     try:
-        user.approved = True  
+        user.approved = True
         user.save()
     except user.DoesNotExist:
         logging.error(
             f'Failed to change user')
+
 
 def reject_application(user):
     try:
-        remove_business(user)          
+        remove_business(user)
         user.save()
     except user.DoesNotExist:
         logging.error(
             f'Failed to change user')
 
+
 def change_status(user, status):
     try:
-        user.ban_status = status  
+        user.ban_status = status
         user.save()
     except user.DoesNotExist:
         logging.error(
-            f'Failed to change user')            
+            f'Failed to change user')
 
 
-
-            
 def remove_from_wishlist(registered_customer, item_id):
     try:
         item = Item.objects.get(pk=item_id)
@@ -57,6 +59,10 @@ def remove_from_wishlist(registered_customer, item_id):
 def add_to_cart(registered_customer, item_id):
     item = get_object_or_404(Item, pk=item_id)
     cart = registered_customer.cart
+    if cart and cart.status != Order.Status.In_cart:
+        registered_customer.cart = None
+        registered_customer.save()
+        cart = registered_customer.cart
     if not cart:
         cart = Order.objects.create(status=Order.Status.In_cart)
         registered_customer.cart = cart
