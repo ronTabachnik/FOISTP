@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 # Ron, use this module ↓ to implement login+register+logout
 from django.contrib.auth import views as auth_views
 
@@ -7,8 +9,9 @@ urlpatterns = [
     path('', views.profile_view, name='profile'),
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
-    path('register-business/', views.register_as_business_view,
-         name='register_business'),
+    path('edit_profile/<str:username>/', views.user_edit_view, name='edit_profile'),
+    path('logout/', views.logout_view, name='logout'),
+    path('accounts/password_reset/',views.password_reset_view, name ='password_reset'),
     # NEEDS TO CREATE path('admin_dashboard/', views.admin_dashboard_view, name='admin_dashboard'),
     path('change_status/<uuid:user_id>',
          views.change_profile_status_view, name='change_status'),
@@ -16,7 +19,7 @@ urlpatterns = [
     # reject business
     path('store_closure/', views.request_store_closure_view, name='store_closure'),
 
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    
     path('wishlist/', views.wishlist_view, name='wishlist'),
     path('add_to_wishlist/<uuid:item_id>/',
          views.add_to_wishlist_view, name='add_to_wishlist'),
@@ -35,3 +38,4 @@ urlpatterns = [
     path('payment/', views.payment_view, name='payment'),
     path('store-dashboard/', views.store_dashboard_view, name='store dashboard')
 ]
+
