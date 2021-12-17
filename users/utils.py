@@ -71,11 +71,39 @@ def add_to_cart(registered_customer, item_id):
     order_item.save()
 
 
+def increase_item_amount(registered_customer, item_id):
+    cart = registered_customer.cart
+    try:
+        item = OrderItem.objects.get(pk=item_id)
+    except OrderItem.DoesNotExist:
+        logging.error(
+            f'Failed to increase item quantity in the user {registered_customer.user.username} cart. (Item with id:{item_id} does not exists.)')
+    item.quantity += 1
+    cart.total_price -= item.item.price
+
+    cart.save()
+    item.save()
+
+
+def decrease_item_amount(registered_customer, item_id):
+    cart = registered_customer.cart
+    try:
+        item = OrderItem.objects.get(pk=item_id)
+    except OrderItem.DoesNotExist:
+        logging.error(
+            f'Failed to decrease item quantity in the user {registered_customer.user.username} cart. (Item with id:{item_id} does not exists.)')
+    item.quantity -= 1
+    cart
+
+    cart.save()
+    item.save()
+
+
 def remove_from_cart(registered_customer, item_id):
     cart = registered_customer.cart
     try:
         item = OrderItem.objects.get(pk=item_id)
-    except Item.DoesNotExist:
+    except OrderItem.DoesNotExist:
         logging.error(
             f'Failed to remove item from the user {registered_customer.user.username} cart. (Item with id:{item_id} does not exists.)')
     cart.total_price -= item.quantity * item.item.price

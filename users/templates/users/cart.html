@@ -23,7 +23,14 @@
                 <span style="float: right;">${{ cart_item.item.price }}</span>
               </p>
             </div>
+            <ul class="list-group list-group-flush w-100">
+              <li class="list-group-item">Amount: {{cart_item.quantity}}</li>
+            </ul>
             <div class="card-footer w-100">
+              <div class="btn-group w-100 mb-2" role="group">
+                <a class="btn btn-success" href="#">+</a>
+                <a class="btn btn-danger" href="#">-</a>
+              </div>
               <div class="d-grid">
                 <a class="btn btn-outline-danger" href="{% url 'remove_from_cart' cart_item.id %}">Remove</a>
               </div>
