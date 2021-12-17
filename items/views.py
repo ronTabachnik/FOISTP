@@ -4,7 +4,19 @@ from .forms import ReviewForm
 
 
 def home_view(request):
-    items = Item.objects.all()[:20]
+    items = Item.objects.all()
+    categories = Category.objects.all()
+    context = {
+        'items': items,
+        'categories': categories,
+        'current_user': request.user,
+    }
+    return render(request, 'items/home.html', context)
+
+
+def filter_by_category_view(request, category_id):
+    category = Category.objects.get(id=category_id)
+    items = Item.objects.filter(category=category)
     categories = Category.objects.all()
     context = {
         'items': items,

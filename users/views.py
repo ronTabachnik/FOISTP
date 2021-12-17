@@ -152,6 +152,24 @@ def add_to_cart_view(request, item_id):
 
 
 @login_required
+def decrease_item_amount_view(request, item_id):
+    if not hasattr(request.user, 'registered_customer'):
+        return redirect('login')
+    user = request.user
+    registered_customer = user.registered_customer
+    return redirect('cart')
+
+
+@login_required
+def increase_item_amount_view(request, item_id):
+    if not hasattr(request.user, 'registered_customer'):
+        return redirect('login')
+    user = request.user
+    registered_customer = user.registered_customer
+    return redirect('cart')
+
+
+@login_required
 def remove_from_cart_view(request, item_id):
     if not hasattr(request.user, 'registered_customer'):
         return redirect('login')
