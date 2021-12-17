@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from orders.models import Order, OrderItem
 from items.models import Item
 from requests_.models import ReturnRequest
+from service_layer import paypal_api
+from django.contrib import messages
 
 
 def send_return_request_view(request, order_id):
@@ -42,8 +44,15 @@ def return_request_accept_view(request, request_id):
     if not hasattr(request.user, 'business'):
         return redirect('login')
     return_request = get_object_or_404(ReturnRequest, pk=request_id)
-    return_request.status = ReturnRequest.Status.Accepted
-    return_request.save()
+    if paypal_api.transfer_funds(return_request.business, return_request.customer):
+        return_request.status = ReturnRequest.Status.Accepted
+        return_request.save()
+        messages.success(request, 'Return request accepted')
+    else:
+        return_request.status = ReturnRequest.Status.Error
+        return_request.save()
+        messages.success(request, 'Return request error')
+
     return redirect('store dashboard')
 
 
@@ -54,6 +63,8 @@ def return_request_reject_view(request, request_id):
     return_request = get_object_or_404(ReturnRequest, pk=request_id)
     return_request.status = ReturnRequest.Status.Rejected
     return_request.save()
+    messages.success(request, 'Return request rejected')
+
     return redirect('store dashboard')
 
 
