@@ -35,11 +35,31 @@
         </div>
         <div class="card-footer w-100">
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <a class="btn btn-outline-success me-md-2" href="{% url 'add_to_cart' item.id %}">Add to cart</a>
+            <a class="btn btn-outline-success" href="{% url 'add_to_cart' item.id %}">Add to cart</a>
             <a class="btn btn-outline-primary" href="{% url 'add_to_wishlist' item.id %}">Add to wishlist</a>
+            <a class="btn btn-outline-warning" href="{% url 'review' item.id %}">Add review</a>
           </div>
         </div>
       </div>
+      {% if reviews|length != 0 %}
+        <div class="row">
+          <div class="col">
+            <ul class="list-group">
+              <li class="list-group-item fw-bold">
+                Reviews:
+              </li>
+              {% for review in reviews %}
+                <li class="list-group-item">
+                  Customer: {{ review.user }}
+                  (Grade: {{ review.grade }})
+                  <br>
+                  {{review.text}}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
     {% endif %}
   </section>
 {% endblock content %}

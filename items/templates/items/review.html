@@ -4,9 +4,15 @@
     Review | Our site
 {% endblock title %}
 {% block content %}
-  <form method='post'>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type='submit'>Post review</button>
-  </form>
+  <section class="container">
+    <div class="row">
+      <div class="col-4 offset-4">
+        <form class="my-5" method='post'>
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class='btn btn-outline-success' type='submit'>Post review</button>
+        </form>
+      </div>
+    </div>
+  </section>
 {% endblock content %}

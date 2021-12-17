@@ -1,11 +1,38 @@
-{% comment %} To implement {% endcomment %}
-
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
   Store return request | Our site
 {% endblock title %}
 {% block content %}
-  <div class="container">
-  </div>
+  <section class="container">
+    <div class="row">
+      <div class="section-title my-3">
+        <h1 class="d-inline">Return request </h1>
+        <span class="text-secondary">id: {{return_request.id}}</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4 offset-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">An item: {{ return_request.item }}</h5>
+          </div>
+          <ul class="list-group list-group-flush w-100">
+            <li class="list-group-item">
+              Count: {{ return_request.count }}
+            </li>
+            <li class="list-group-item">
+              Current status: {{ return_request.get_status_display }}
+            </li>
+          </ul>
+          <div class="card-footer w-100">
+            <div class="btn-group w-100">
+              <a href="{% url 'store return request accept' return_request.id %}" class="btn btn-success">Accept</a>
+              <a href="{% url 'store return request reject' return_request.id %}" class="btn btn-danger">Reject</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock content %}

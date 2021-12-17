@@ -1,10 +1,23 @@
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from items.models import Category, Item, Review
 from .forms import ReviewForm
 
 
 def home_view(request):
-    items = Item.objects.all()[:20]
+    items = Item.objects.all()
+    categories = Category.objects.all()
+    context = {
+        'items': items,
+        'categories': categories,
+        'current_user': request.user,
+    }
+    return render(request, 'items/home.html', context)
+
+
+def filter_by_category_view(request, category_id):
+    category = Category.objects.get(id=category_id)
+    items = Item.objects.filter(category=category)
     categories = Category.objects.all()
     context = {
         'items': items,
@@ -20,7 +33,9 @@ def item_detail_view(request, item_id):
     }
     try:
         item = Item.objects.get(pk=item_id)
+        reviews = item.reviews.all()
         context['item'] = item
+        context['reviews'] = reviews
     except Item.DoesNotExist:
         context['error_message'] = 'Failed to fetch an item.'
     return render(request, 'items/item.html', context)
@@ -42,6 +57,7 @@ def review_view(request, item_id):
             review.grade = grade
             review.text = text
             review.save()
+            messages.success(request, 'Posted review')
         return redirect('item', item_id)
     else:
         form = ReviewForm()

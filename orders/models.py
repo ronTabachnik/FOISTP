@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from email.policy import default
 import uuid
 from django import utils
@@ -17,7 +19,6 @@ class Order(models.Model):
     status = models.CharField(
         max_length=2, choices=Status.choices, default=Status.Error)
     created = models.DateTimeField(auto_now_add=True)
-    total_price = models.FloatField(default=0.0)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
 
@@ -27,7 +28,11 @@ class Order(models.Model):
     def set_status(self, status):
         if self.status != status:
             self.status = status
-            self.last_status = utils.timezone.now
+            self.last_status = datetime.now()
+
+    @property
+    def total_price(self):
+        return sum([item.price for item in self.items.all()], 0)
 
 
 class OrderItem(models.Model):
@@ -37,3 +42,7 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(default=0, blank=False)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
+
+    @property
+    def price(self):
+        return self.item.price * self.quantity

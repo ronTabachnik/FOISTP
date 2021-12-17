@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load user_extras %}
 
 {% block title %}
     Checkout | Our site
@@ -27,9 +26,9 @@
         </div>
         <ul class="list-group mb-3">
           {% for order_item in order_items %}
-            <li class="list-group-item">{{order_item.item.title}}: x{{order_item.quantity}}<span style="float: right;">${{order_item.quantity | multiply:order_item.item.price}}</span></li>
+            <li class="list-group-item">{{order_item.item.title}}: x{{order_item.quantity}}<span style="float: right;">${{order_item.price}}</span></li>
           {% endfor %}
-          <li class="list-group-item fw-bold">Total:<span style="float: right;">{{total_price}}</span></li>
+          <li class="list-group-item fw-bold">Total:<span style="float: right;">${{total_price}}</span></li>
         </ul>
       </div>
     {% endif %}

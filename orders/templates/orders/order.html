@@ -6,12 +6,34 @@
 {% endblock title %}
 {% block content %}
   <div class="container">
+    <div class="row">
+      <div class="section-title my-3">
+        <h1>Order</h1>
+      </div>
+    </div>
     {% if order %}
-      {{ order.created }}
-      {{ order.customer }}
-      {{ order.get_status_display }}
-      {{ order.customer.address }}
-      <a href="{% url 'orders' %}">Request for return</a>
+      <div class="row">
+        <div class="offset-1 col-5">
+          <ul class="list-group">
+            <li class="list-group-item fw-bold">
+              Status: {{ order.get_status_display }}
+              <a class="float-end" href="{% url 'return order' order.id %}">Request for return</a>
+            </li>
+            <li class="list-group-item">Ordered: {{ order.created }}</li>
+            <li class="list-group-item">Customer: {{ order.customer }}</li>
+            <li class="list-group-item">Address: {{ order.customer.address }}</li>
+          </ul>
+        </div>
+        <div class="col-4">
+          <ul class="list-group">
+            {% for order_item in order_items %}
+              <li class="list-group-item">{{ order_item.item }} x{{ order_item.quantity }} <span class="float-end">${{ order_item.price }}</span></li>
+            {% endfor %}
+            <li class="list-group-item fw-bold">Total: ${{order.total_price}}</li>
+          </ul>
+        </div>
+      </div>
+      
     {% else %}
       <p>Order does not exist</p>
     {% endif %}
