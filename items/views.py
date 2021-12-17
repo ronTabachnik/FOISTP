@@ -33,7 +33,7 @@ def item_detail_view(request, item_id):
     }
     try:
         item = Item.objects.get(pk=item_id)
-        reviews = item.review_set.all()
+        reviews = item.reviews.all()
         context['item'] = item
         context['reviews'] = reviews
     except Item.DoesNotExist:
