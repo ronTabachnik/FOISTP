@@ -19,8 +19,6 @@ class Order(models.Model):
     status = models.CharField(
         max_length=2, choices=Status.choices, default=Status.Error)
     created = models.DateTimeField(auto_now_add=True)
-    total_price = models.DecimalField(
-        max_digits=6, decimal_places=2, default=0.0)
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
 
@@ -32,6 +30,10 @@ class Order(models.Model):
             self.status = status
             self.last_status = datetime.now()
 
+    @property
+    def total_price(self):
+        return sum([item.price for item in self.items.all()], 0)
+
 
 class OrderItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
@@ -41,5 +43,6 @@ class OrderItem(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
 
+    @property
     def price(self):
         return self.item.price * self.quantity
