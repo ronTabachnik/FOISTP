@@ -9,6 +9,12 @@ urlpatterns = [
     path('register/', views.register_view, name='register'),
     path('register-business/', views.register_as_business_view,
          name='register_business'),
+    #NEEDS TO CREATE path('admin_dashboard/', views.admin_dashboard_view, name='admin_dashboard'),
+    path('change_status/<uuid:user_id>', views.change_profile_status_view, name='change_status'),
+    #accept
+    #reject business
+    path('store_closure/', views.request_store_closure_view, name='store_closure'),
+
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('wishlist/', views.wishlist_view, name='wishlist'),
     path('add_to_wishlist/<uuid:item_id>/',

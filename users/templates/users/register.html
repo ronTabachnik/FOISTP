@@ -5,6 +5,9 @@
   Register | Our site
 {% endblock title %}
 {% block content %}
+{% if form.errors %}
+<p> There was an error with your form..</p>
+{% endif %}
 <section class="container">
   <div class="row">
     <div class="section-title my-3">
@@ -13,9 +16,9 @@
   </div>
   <div class="row">
     <div class="col-4 offset-4">
-      <form action="POST" class="mb-5">
+      <form action="{% url 'register' %}" method=POST class="mb-5">
         {% csrf_token %}
-        {{formset.as_p}}
+        {{form}}
         <button class="btn btn-outline-success w-100 mb-5" type="submit">Register</button>
         <a class="btn btn-outline-primary w-100" href="{% url 'register_business' %}">Go to business registration</a>
       </form>
